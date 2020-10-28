@@ -18,9 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Song.init({
-    song_name: DataTypes.STRING,
+    title: DataTypes.STRING,
     artist: DataTypes.STRING,
-    genre: DataTypes.STRING
+    duration: DataTypes.INTEGER,
+    link: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Song',
