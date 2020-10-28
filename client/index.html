@@ -44,41 +44,93 @@
   <div class="authentication">
     <div class="container">
       <div class="row">
-        <div class="col-lg-4 col-sm-12">
-          <form id="login_form" class="card auth_form" onsubmit="login(event)">
-            <div class="header">
-              <img class="logo" src="public/images/logo.png" alt="">
-              <h5>Log in</h5>
-            </div>
-            <div class="body">
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+        <div class="col-lg-4 col-sm-12" id="auth">
+          <div id="form-login">
+            <form id="login_form" class="card auth_form" onsubmit="login(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Log in</h5>
+              </div>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" id="login-username" class="form-control" placeholder="Username" required>
                 </div>
-                <input type="text" id="login-username" class="form-control" placeholder="Username" required>
-              </div>
-              <div class="input-group mb-3">
-                <div class="input-group-append">
-                  <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" id="login-password" class="form-control" placeholder="Password" required>
                 </div>
-                <input type="password" id="login-password" class="form-control" placeholder="Password" required>
+                <!-- <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">Remember Me</label>
+                </div> -->
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
+                <div class="signin_with">
+                  <button class="btn-lg btn-link" onclick="showRegister(event)">Register new memership?</button>
+                </div>
+                <div class="signin_with mt-1">
+                  <p class="mb-0">or Sign Up using</p>
+                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i
+                      class="zmdi zmdi-facebook"></i></button>
+                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i
+                      class="zmdi zmdi-twitter"></i></button>
+                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i
+                      class="zmdi zmdi-google"></i></button>
+                </div>
               </div>
-              <!-- <div class="checkbox">
-                <input id="remember_me" type="checkbox">
-                <label for="remember_me">Remember Me</label>
-              </div> -->
-              <button class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
-              <div class="signin_with mt-3">
-                <p class="mb-0">or Sign Up using</p>
-                <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i
-                    class="zmdi zmdi-facebook"></i></button>
-                <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i
-                    class="zmdi zmdi-twitter"></i></button>
-                <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i
-                    class="zmdi zmdi-google"></i></button>
+            </form>
+          </div>
+
+          <div id="form-register"  style="display: none;">
+            <form class="card auth_form" onsubmit="register(event)">
+              <div class="header">
+                <img class="logo" src="public/images/logo.png" alt="">
+                <h5>Sign Up</h5>
+                <span>Register a new membership</span>
               </div>
-            </div>
-          </form>
+              <div class="body">
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                  </div>
+                  <input type="text" class="form-control" id="register-username" placeholder="Username" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                  </div>
+                  <input type="email" class="form-control" id="register-email" placeholder="Enter Email" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-password" placeholder="Password" required>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" id="register-retype-password"
+                    placeholder="Retype password" required>
+                </div>
+                <div class="checkbox">
+                  <input id="remember_me" type="checkbox">
+                  <label for="remember_me">I read and agree to the <a href="javascript:void(0);">terms of
+                      usage</a></label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SIGN UP</button>
+                <div class="signin_with mt-3">
+                  <button class="btn-lg btn-link" onclick="showLogin(event)">You already have a membership?</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
           <div class="copyright text-center">
             <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
                 <script> document.write(new Date().getFullYear()) </script></span></b>
@@ -86,7 +138,7 @@
         </div>
         <div class="col-lg-8 col-sm-12">
           <div class="card">
-            <img src="public/images/signin.svg" alt="Sign In" />
+            <img src="public/images/music.jpg" alt="Sign In" />
           </div>
         </div>
       </div>
