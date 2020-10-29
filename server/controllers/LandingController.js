@@ -1,6 +1,7 @@
 const { User } = require('../models/index')
 const { comparePassword } = require('../helper/bcrypt')
 const { signToken } = require('../helper/jwt')
+const {OAuth2Client} = require('google-auth-library');
 
 class LandingController {
     static async register(req, res, next) {
@@ -59,6 +60,42 @@ class LandingController {
         } catch (err) {
             next(err)
         }
+    }
+
+    static googleLogin(req, res, next){
+        let { google_access_token } = req.body
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        let email = ''
+        let username = ''
+        client.verifyIdToken({
+          idToken: google_access_token,
+          audience: process.env.CLIENT_ID,
+        })
+        .then(ticket=>{
+          const payload = ticket.getPayload();
+          username = payload.email
+          email = payload.email
+          return User.findOne({where:{email}})
+        })
+        .then(user=>{
+          if(user){
+            return user
+          }else{
+            let newUser = {
+                username,
+                email,
+                password:'random'
+            }
+            return User.create(newUser)
+          }
+        })
+        .then(data=>{
+            let access_token = signToken({id: data.id, email:data.email})
+            res.status(200).json({access_token})
+        })
+        .catch(err=>{
+            console.log(err)
+        })
     }
 }
   
