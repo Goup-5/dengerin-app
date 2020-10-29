@@ -17,60 +17,35 @@ class APIController {
         }
         
     }
-    static async searchSongs(req, res, next) {
+
+    static async billboard(req, res, next) {
         try {
-            const search = req.body.search
+            const date = '2019-05-11'
+            const range = '1-10'
             let response = await Axios({
-                url: `https://api.deezer.com/search?q=${search}`,
+                crossDomain: true,
+                url: `https://billboard-api2.p.rapidapi.com/billboard-200?date=${date}&range=${range}`,
                 method: 'get',
+                headers: {
+                    'x-rapidapi-host': "billboard-api2.p.rapidapi.com",
+                    'x-rapidapi-key': "b32eeef690msh107d7c25f7fadabp1498d2jsn2b719fae361b"
+                }
             })
-            let data = [];
-            response.data.data.forEach((el) => {
-                data.push({
-                    id: el.id,
-                    title: el.title,
-                    duration: timeFormat(el.duration),
-                    artist: el.artist.name,
-                    link: el.preview,
-                    artist_link: el.artist.link
-                })
-            });
-            res.status(200).json(data);
+            res.status(200).json(response.data.content)
         } catch (err) {
             next(err)
         }
+        
     }
 
-    static async addSong(req, res, next) {
-        try {
-            const id = req.params.songid;
-            const search = req.params.search;
-            let response = await Axios({
-                url: `https://api.deezer.com/search?q=${search}`,
-                method: 'get',
-            })
-            let data = [];
-            response.data.data.forEach((el) => {
-                if(el.id == id){
-                    data.push({
-                        title: el.title,
-                        duration: el.duration,
-                        artist: el.artist.name,
-                        link: el.preview,
-                        artist_link: el.artist_link
-                    })
-                }
-            });
-            let newSong = await Song.create(data[0], {returning:true});
-            let payload = {
-                PlaylistId: req.params.id,
-                SongId: newSong.id
-            }
-            let songPlaylist = await PlaylistSong.create(payload)
-            res.status(200).json(songPlaylist);
-        } catch (err) {
-            next(err)
-        }
+    static async randomJokes(req,res,next){
+        let result = await Axios.get("https://sv443.net/jokeapi/v2/joke/Programming",{
+          params:{
+            blacklistFlags: "religious,political,racist,sexist",
+            type:"twopart"
+          }
+        })
+        res.status(200).json({setup:result.data.setup,delivery:result.data.delivery})
     }
     
 }
