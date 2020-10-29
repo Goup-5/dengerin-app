@@ -20,7 +20,7 @@ function login(e) {
 
 function googleLogin(e) {
   e.preventDefault()
-  afterLogin(e)
+  afterLogin()
 }
 
 function prosesLogin(input, e) {
@@ -41,7 +41,7 @@ function prosesLogin(input, e) {
         text: 'Welcome, enjoy dengerin musik!',
         icon: 'success',
         onClose: () => {
-          afterLogin(e)
+          afterLogin()
         }
       })
     })
@@ -60,14 +60,13 @@ function saveToken(access_token) {
   localStorage.setItem('access_token', access_token);
 }
 
-function afterLogin(e) {
+function afterLogin() {
   $("#login-username").val('')
   $("#login-password").val('')
-  home(e)
+  home()
 }
 
-function home(e) {
-  e.preventDefault()
+function home() { 
   $("#navbar-right").show();
   $("#page-auth").hide();
   $("form-login").hide();
@@ -77,34 +76,7 @@ function home(e) {
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
-
-  let access_token = localStorage.getItem("access_token");
-  $.ajax({
-    method: "GET",
-    url: `${base_url}/playlist`,
-    headers: {access_token}
-  })
-  .done(response => {
-    console.log(response)
-    response.forEach((el, i) => {
-      $("#tabel-playlist").append(`
-                          <tr>
-                            <td>${i}</td>
-                            <td>${el.playlist_name} <span class="badge badge-primary ml-3">99 songs</span></td>
-                            <td class="float-right">
-                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
-                                  class="zmdi zmdi-edit"></i></button>
-                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
-                                  class="zmdi zmdi-delete"></i></button>
-                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(event)"><i
-                                  class="zmdi zmdi-open-in-new"></i></button>
-                            </td>
-                          </tr>
-      `)
-    })
-      
-  })
-  .fail(err => console.log(err))
+  showPlaylist()
   pauseAudio()
 }
 
@@ -166,6 +138,32 @@ function afterRegister(e) {
   showLogin(e)
 }
 
+function onSignIn(googleUser) {
+  // var profile = googleUser.getBasicProfile();
+  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  // console.log('Name: ' + profile.getName());
+  // console.log('Image URL: ' + profile.getImageUrl());
+  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+  let google_access_token = googleUser.getAuthResponse().id_token;
+
+  $.ajax({
+    method: 'POST',
+    url: 'http://localhost:3000/googleLogin',
+    data: {
+      google_access_token
+    }
+  })
+    .done(response => { 
+      console.log(response.access_token)
+      afterLogin()
+      saveToken(response.access_token)  
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
 function beforeSignOut(e) {
   e.preventDefault()
   Swal.fire({
@@ -178,40 +176,25 @@ function beforeSignOut(e) {
     confirmButtonText: 'Yes, Logout!'
   }).then((result) => {
     if (result.isConfirmed) {
-      localStorage.clear();
+      logout();
       afterSignOut(e);
     }
   })
 }
-
-function onSignIn(googleUser, e) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-  let google_access_token = googleUser.getAuthResponse().id_token;
-
-  $.ajax({
-    method: 'POST',
-    url: 'http://localhost:3000/googleLogin',
-    data: {
-      google_access_token
-    }
-  })
-    .done(response => {
-      console.log(response)
-      localStorage.setItem('access_token', response.access_token)
-    })
-    .fail(err => {
-      console.log(err)
-    })
+ 
+function signOut(e) {
+  beforeSignOut(e)
 }
 
-function signOut(e) {
-  logout()// buat logout si google
-  beforeSignOut(e)
+//ceeeek dulu
+function logout() { 
+  localStorage.clear()
+  //sign out google
+  let auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut()
+  .then(function () {
+    console.log('User signed out.');
+  }); 
 }
 
 function afterSignOut(e) {
@@ -307,7 +290,7 @@ function deletePlaylist(e, id) {
     })
 }
 
-function deleteSong(e) {
+function deleteSong(e, playlistid, songid) {
   e.preventDefault()
   Swal.fire({
     title: 'Are you sure?',
@@ -319,6 +302,17 @@ function deleteSong(e) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
+      let access_token = localStorage.getItem("access_token");
+      $.ajax({
+        method: "DELETE",
+        url: `${base_url}/playlist/${playlistid}/song/${songid}`,
+        headers: {access_token},
+      })
+      .done(response => {
+        console.log(response);
+        showPlaylistDetail(playlistid)
+      })
+      .fail(err => console.log(err));
       Swal.fire(
         'Deleted!',
         'Your song has been deleted from playlist.',
@@ -328,15 +322,76 @@ function deleteSong(e) {
   })
 }
 
-function showPlaylist(e) {
-  e.preventDefault();
+function showPlaylist() {
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
+  let access_token = localStorage.getItem("access_token");
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/playlist`,
+    headers: {access_token}
+  })
+  .done(response => {
+    console.log(response)
+    $("#tabel-playlist").empty();
+    response.forEach((el, i) => {
+      $("#tabel-playlist").append(`
+                          <tr>
+                            <td>${i}</td>
+                            <td>${el.playlist_name} <span class="badge badge-primary ml-3">${el.Songs.length} songs</span></td>
+                            <td class="float-right">
+                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+                                  class="zmdi zmdi-edit"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
+                                  class="zmdi zmdi-delete"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${el.id})"><i
+                                  class="zmdi zmdi-open-in-new"></i></button>
+                            </td>
+                          </tr>
+      `)
+    })
+      
+  })
+  .fail(err => console.log(err))
 }
 
-function showPlaylistDetail(e) {
+function showPlaylistDetail(id) {
   $("#page-playlist").hide();
   $("#page-detail-playlist").show();
+  let access_token = localStorage.getItem("access_token");
+
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/playlist/${id}/song`,
+    headers: {access_token},
+  })
+  .done(response => {
+    console.log(response)
+    $(".song-list").empty();
+    response.Songs.forEach((el, i) => {
+      $(".song-list").append(`
+        <tr>
+          <td>${i}</td>
+          <td>
+            <audio id="audio" controls="controls" style="width: 100%;">
+                          <source id="audioSource" src="${el.link}">
+                          </source>
+                          Your browser does not support the audio format.
+                        </audio>
+
+          </td>
+          <td>${el.title} <span class="badge badge-primary ml-3">${el.duration}</span></td>
+          <td>${el.artist}</td>
+          <td class="float-right">
+            <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
+                class="zmdi zmdi-delete"></i></button>
+          </td>
+        </tr>
+      `)
+    })
+      
+  })
+  .fail(err => console.log(err))
 }
 
 function addSong(e) {
@@ -345,22 +400,7 @@ function addSong(e) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").show();
 }
-
-//ceeeek dulu
-function logout() {
-  $('#home').hide()
-  $('#login').show()
-  localStorage.clear()
-  //sign out google
-  let auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut()
-  .then(function () {
-    console.log('User signed out.');
-  });
-  //sign out google
-}
-
-
+ 
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 
@@ -382,44 +422,7 @@ function sweetAlert() {
           })
         })
     }
-  }])
-  // $.ajax({
-
-  //   url: "simpan-register.php",
-  //   type: "POST",
-  //   data: {
-  //       "nama_lengkap": nama_lengkap,
-  //       "username": username,
-  //       "password": password
-  //   },
-
-  //   success:function(response){
-
-  //     if (response == "success") {
-
-  //       Swal.fire({
-  //         type: 'success',
-  //         title: 'Register Berhasil!',
-  //         text: 'silahkan login!'
-  //       });
-
-  //       $("#nama_lengkap").val('');
-  //       $("#username").val('');
-  //       $("#password").val('');
-
-  //     } else {
-
-  //       Swal.fire({
-  //         type: 'error',
-  //         title: 'Register Gagal!',
-  //         text: 'silahkan coba lagi!'
-  //       });
-
-  //     } 
-  //     console.log(response);
-  //   }
-  // })
-
+  }]) 
 }
 
 function pauseAudio() {
@@ -428,8 +431,17 @@ function pauseAudio() {
   });
 }
 
+function playAudio(src){
+  var audio = document.getElementById('audio');
+  var source = document.getElementById('audioSource');
+  source.src = src;
+
+  audio.load(); //call this to just preload the audio without playing
+  audio.play(); //call this to play the song right away
+}
 $('.play-audio').click(function () {
   var d = $(this).data('datac');
+  console.log(d)
   var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
   source.src = d;

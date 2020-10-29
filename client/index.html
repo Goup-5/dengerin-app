@@ -176,7 +176,7 @@
 
                   <!-- TODO: addPlaylist -->
                   <!-- Page Add Playlist -->
-                  <div id="page-playlist" style="display: none;">
+                  <div id="page-playlist" style="display: none;" onload="showPlaylist(event)">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
@@ -279,8 +279,8 @@
                             </th>
                           </tr>
                         </thead> -->
-                        <tbody id="list">
-                          <tr>
+                        <tbody id="list" class="song-list">
+                          <!-- <tr>
                             <td>01</td>
                             <td>
                               <a class="play-audio" href="#"
@@ -306,7 +306,7 @@
                             <td class="float-right">
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
                             </td>
-                          </tr>
+                          </tr> -->
                         </tbody>
                       </table>
                     </div>
@@ -396,7 +396,7 @@
     </section>
 
     <!-- TODO: pageAuthentication -->
-    <!-- Login Sidebar -->
+    <!-- Auth Page -->
     <div class="authentication" id="page-auth" style="display: block;">
       <div class="container">
         <div class="row">
@@ -432,8 +432,8 @@
                   </div>
                   <div class="signin_with mt-1">
                     <p class="mb-0">or Sign Up using</p>
-                    <button class="btn btn-link btn-icon btn-md btn-icon-mini btn-round g-signin2"
-                      data-onsuccess="onSignIn" onclick="googleLogin(event)"></button>
+                    <button class="btn btn-link btn-icon btn-lg btn-icon-mini btn-round g-signin2" data-height="59"
+                      data-onsuccess="onSignIn"></button>
                   </div>
                 </div>
               </form>

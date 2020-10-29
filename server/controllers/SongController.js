@@ -1,5 +1,5 @@
 const { default: Axios } = require('axios')
-const { PlaylistSong, Song } = require('../models/index')
+const { PlaylistSong, Song, Playlist } = require('../models/index')
 const timeFormat = require('../helper/secToMinutes')
 
 class SongController {
@@ -24,6 +24,15 @@ class SongController {
             res.status(200).json(data);
         } catch (err) {
             next(err)
+        }
+    }
+
+    static async getSongs(req, res, next){
+        try {
+            let data = await Playlist.findOne({where:{id:req.params.id}, include:[Song]})
+            res.status(200).json(data);
+        } catch (error){
+            next(error);
         }
     }
 

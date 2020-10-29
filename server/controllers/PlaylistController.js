@@ -1,4 +1,4 @@
-const { Playlist } = require("../models/index");
+const { Playlist, PlaylistSong, Song } = require("../models/index");
 const { verifyToken } = require("../helper/jwt");
 
 
@@ -9,8 +9,8 @@ class PLayListController {
 
   static async readPlaylist (req, res, next){
     try {
-      let playlist = await Playlist.findAll();
-      res.status(200).json(playlist);
+      let playlistSongs = await Playlist.findAll({include:[Song]});
+      res.status(200).json(playlistSongs);
     } catch (err) {
       next(err);
     }
@@ -26,6 +26,7 @@ class PLayListController {
   }
 
   static async createPlaylist (req, res, next){
+      console.log(req.headers.access_token)
     try {
       let user = verifyToken(req.headers.access_token)
       let payload = {
