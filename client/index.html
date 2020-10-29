@@ -237,14 +237,16 @@
             </div>
           </div>
         </div>
+
         <div class="container-fluid" style="margin-left: 0;">
           <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="card">
                 <div class="header">
-                  
+
+                  <!-- TODO: addPlaylist -->
                   <!-- Page Add Playlist -->
-                  <div id="page-add-playlist" style="display: block;">
+                  <div id="page-add-playlist" style="display: none;">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
@@ -300,14 +302,92 @@
                       </table>
                     </div>
                   </div>
+
+                  <!-- TODO: listSong -->
+                  <!-- Page List Song -->
+                  <div id="page-add-playlist" style="display: block;">
+                    <h2><strong>List</strong> Music</h2>
+                    <ul class="header-dropdown">
+                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                          role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                        <ul class="dropdown-menu dropdown-menu-right slideUp">
+                          <li><a href="javascript:void(0);">Edit Playlist</a></li>
+                          <li><a href="javascript:void(0);">Delete Playslist</a></li>
+                        </ul>
+                      </li>
+                      <!-- <li class="remove">
+                      <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
+                    </li> -->
+                    </ul>
+                    <br>
+                    <div class="table-responsive">
+                      <!-- Form Search Song -->
+                      <form onsubmit="">
+                        <div class="input-group mb-4">
+                          <input type="text" class="form-control" placeholder="Search Song...">
+                          <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary btn-primaryS" type="button"
+                              id="button-addon2">Search</button>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="">
+                        <div class="row clearfix">
+                          <div class="col-lg-4 col-md-12">
+                            <div class="card small_mcard_1">
+                              <div class="user">
+                                <img
+                                  src="https://images-ext-1.discordapp.net/external/ogGjZFaKO5uGRUk6Wq84b-d63Hl3W7_VT4OY0B2ULes/https/cdns-images.dzcdn.net/images/artist/0707267475580b1b82f4da20a1b295c6/120x120-000000-80-0-0.jpg"
+                                  alt="profile-image">
+                                <div class="details">
+                                  <h6 class="mb-0 mt-2">Eminem</h6>
+                                  <p class="mb-0"><small>Listen eminem</small></p>
+                                  <button class="btn btn-primary">Add to Playlist</button>
+                                </div>
+                              </div>
+                              <div class="footer audio-playback">
+                                <audio controls style="width: 100%;">
+                                  <source
+                                    src="https://cdns-preview-1.dzcdn.net/stream/c-13039fed16a173733f227b0bec631034-12.mp3"
+                                    type="audio/mpeg">
+                                </audio>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-4 col-md-12">
+                            <div class="card small_mcard_1">
+                              <div class="user">
+                                <img src="http://api.deezer.com/artist/96397302/image" alt="profile-image">
+                                <div class="details">
+                                  <h6 class="mb-0 mt-2">Kekeyi</h6>
+                                  <p class="mb-0"><small>Aku bukan boneka</small></p>
+                                  <button class="btn btn-primary">Add to Playlist</button>
+                                </div>
+                              </div>
+                              <div class="footer audio-playback">
+                                <audio controls style="width: 100%;">
+                                  <source
+                                    src="http://cdn-preview-0.deezer.com/stream/c-031987fe3205fe94c0d92b625be00a47-2.mp3"
+                                    type="audio/mpeg">
+                                </audio>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </section>
 
+    <!-- TODO: pageAuthentication -->
     <!-- Login Sidebar -->
     <div class="authentication" id="menu" style="display: block;">
       <div class="container">
@@ -435,7 +515,7 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script> -->
   <script src="public/plugins/sweetalert2/promise-polyfill.js"></script>
   <script type="text/javascript" src="index.js"></script>
-  <script type="text/javascript" src="add-playlist.js"></script>
+  <script type="text/javascript" src="play-song.js"></script>
 
   <script src="https://apis.google.com/js/platform.js" async defer></script><!-- oauth goole -->
 
