@@ -88,7 +88,7 @@ function home() {
     response.forEach((el, i) => {
       $("#tabel-playlist").append(`
                           <tr>
-                            <td>${i}</td>
+                            <td>${i + 1}</td>
                             <td>${el.playlist_name} <span class="badge badge-primary ml-3">99 songs</span></td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
@@ -336,14 +336,13 @@ function pauseAudio() {
   $("audio").not(this).each(function (index, audio) {
     audio.pause();
   });
-}
+}Y
 
 $('.play-audio').click(function () {
   var d = $(this).data('datac');
   var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
   source.src = d;
-
   audio.load(); //call this to just preload the audio without playing
   audio.play(); //call this to play the song right away
 
