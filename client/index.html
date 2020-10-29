@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
-  <meta name="google-signin-client_id" content="941832502876-ar1627dk7p6btq88vc663k2gi4mvfk3b.apps.googleusercontent.com">
+  <meta name="google-signin-client_id"
+    content="941832502876-ar1627dk7p6btq88vc663k2gi4mvfk3b.apps.googleusercontent.com">
 
   <title>Dengerin App</title>
   <!-- Favicon-->
@@ -50,7 +51,7 @@
   <main role="main" class="container">
 
     <!-- Right Icon menu Sidebar -->
-    <div class="navbar-right">
+    <div class="navbar-right" id="navbar-right" style="display: none;">
       <ul class="navbar-nav">
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
@@ -60,25 +61,25 @@
             <li class="body">
               <ul class="menu app_sortcut list-unstyled">
                 <li>
-                  <a href="image-gallery.html">
+                  <a onclick="home(event)" href="javascript:void(0);">
                     <div class="icon-circle mb-2 bg-blue"><i class="zmdi zmdi-playlist-audio"></i></div>
                     <p class="mb-0">Playlist</p>
                   </a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="javascript:void(0);">
                     <div class="icon-circle mb-2 bg-amber"><i class="zmdi zmdi-collection-music"></i></div>
                     <p class="mb-0">Music</p>
                   </a>
                 </li>
                 <li>
-                  <a href="events.html">
+                  <a href="javascript:void(0);">
                     <div class="icon-circle mb-2 bg-green"><i class="zmdi zmdi-search"></i></div>
                     <p class="mb-0">Search Music</p>
                   </a>
-                </li>
+                </li> -->
                 <li>
-                  <a href="contact.html">
+                  <a href="javascript:void(0);">
                     <div class="icon-circle mb-2 bg-purple"><i class="zmdi zmdi-account-o"></i></div>
                     <p class="mb-0">Profile</p>
                   </a>
@@ -87,86 +88,10 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="dropdown-toggle" title="Notifications" data-toggle="dropdown"
-            role="button"><i class="zmdi zmdi-notifications"></i>
-            <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-          </a>
-          <ul class="dropdown-menu slideUp2">
-            <li class="header">Notifications</li>
-            <li class="body">
-              <ul class="menu list-unstyled">
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-blue"><i class="zmdi zmdi-account"></i></div>
-                    <div class="menu-info">
-                      <h4>8 New Members joined</h4>
-                      <p><i class="zmdi zmdi-time"></i> 14 mins ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-amber"><i class="zmdi zmdi-shopping-cart"></i></div>
-                    <div class="menu-info">
-                      <h4>4 Sales made</h4>
-                      <p><i class="zmdi zmdi-time"></i> 22 mins ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-red"><i class="zmdi zmdi-delete"></i></div>
-                    <div class="menu-info">
-                      <h4><b>Nancy Doe</b> Deleted account</h4>
-                      <p><i class="zmdi zmdi-time"></i> 3 hours ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-green"><i class="zmdi zmdi-edit"></i></div>
-                    <div class="menu-info">
-                      <h4><b>Nancy</b> Changed name</h4>
-                      <p><i class="zmdi zmdi-time"></i> 2 hours ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-grey"><i class="zmdi zmdi-comment-text"></i></div>
-                    <div class="menu-info">
-                      <h4><b>John</b> Commented your post</h4>
-                      <p><i class="zmdi zmdi-time"></i> 4 hours ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-purple"><i class="zmdi zmdi-refresh"></i></div>
-                    <div class="menu-info">
-                      <h4><b>John</b> Updated status</h4>
-                      <p><i class="zmdi zmdi-time"></i> 3 hours ago </p>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">
-                    <div class="icon-circle bg-light-blue"><i class="zmdi zmdi-settings"></i></div>
-                    <div class="menu-info">
-                      <h4>Settings Updated</h4>
-                      <p><i class="zmdi zmdi-time"></i> Yesterday </p>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
-          </ul>
-        </li>
         <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i
               class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
-        <li><a href="sign-in.html" class="mega-menu" title="Sign Out"><i class="zmdi zmdi-power"></i></a></li>
+        <li><a onclick="signOut(event)" href="javascript:void(0);" class="mega-menu" title="Sign Out"><i
+              class="zmdi zmdi-power"></i></a></li>
       </ul>
     </div>
 
@@ -222,14 +147,15 @@
     </aside>
 
     <!-- Content -->
-    <section class="content">
+    <section class="content" id="page-home" style="display: none;">
       <div class="body_scroll">
         <div class="block-header">
           <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
               <h2>Playlist</h2>
               <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+                <li class="breadcrumb-item" onclick="home(event)"><a href=""><i class="zmdi zmdi-home"></i> Home</a>
+                </li>
                 <li class="breadcrumb-item active">Playlist</li>
               </ul>
               <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
@@ -250,7 +176,7 @@
 
                   <!-- TODO: addPlaylist -->
                   <!-- Page Add Playlist -->
-                  <div id="page-add-playlist" style="display: none;">
+                  <div id="page-playlist" style="display: none;">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
@@ -288,9 +214,12 @@
                             <td>01</td>
                             <td>Playlist Name <span class="badge badge-primary ml-3">99 songs</span></td>
                             <td class="float-right">
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-edit"></i></button>
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-open-in-new"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+                                  class="zmdi zmdi-edit"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
+                                  class="zmdi zmdi-delete"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(event)"><i
+                                  class="zmdi zmdi-open-in-new"></i></button>
                             </td>
                           </tr>
                           <tr>
@@ -305,18 +234,18 @@
                         </tbody>
                       </table>
                     </div>
-                  </div> 
+                  </div>
 
                   <!-- TODO: detailPlaylist -->
                   <!-- Page Add Playlist -->
-                  <div id="page-add-playlist" style="display: block;">
+                  <div id="page-detail-playlist" style="display: none;">
                     <h2><strong>Playlist</strong> Name</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                         <ul class="dropdown-menu dropdown-menu-right slideUp">
-                          <li><a href="javascript:void(0);">Add Song</a></li>
-                          <li><a href="javascript:void(0);">Delete Playslist</a></li>
+                          <li onclick="addSong(event)"><a href="#">Add Song</a></li>
+                          <li onclick="deletePlaylist(event)"><a href="#">Delete Playslist</a></li>
                         </ul>
                       </li>
                       <!-- <li class="remove">
@@ -335,6 +264,14 @@
                           </div>
                         </div>
                       </form>
+                      <div class="col-md-12">
+
+                        <audio id="audio" controls="controls" style="width: 100%;">
+                          <source id="audioSource" src="">
+                          </source>
+                          Your browser does not support the audio format.
+                        </audio>
+                      </div>
                       <table class="table table-hover c_table theme-color">
                         <!-- <thead>
                           <tr>
@@ -342,29 +279,34 @@
                             </th>
                           </tr>
                         </thead> -->
-                        <tbody>
+                        <tbody id="list">
                           <tr>
                             <td>01</td>
                             <td>
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button>
+                              <a class="play-audio" href="#"
+                                data-datac="http://cdn-preview-0.deezer.com/stream/c-031987fe3205fe94c0d92b625be00a47-2.mp3"><button
+                                  class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
                             </td>
                             <td>Aku Bukan Boneka <span class="badge badge-primary ml-3">2:30</span></td>
                             <td>Kekeyi</td>
                             <td class="float-right">
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
+                              <button onclick="deleteSong(event)" class="btn btn-default btn-sm"><i
+                                  class="zmdi zmdi-delete"></i></button>
                             </td>
-                          </tr> 
+                          </tr>
                           <tr>
                             <td>02</td>
                             <td>
-                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button>
+                              <a class="play-audio" href="#"
+                                data-datac="https://cdns-preview-1.dzcdn.net/stream/c-13039fed16a173733f227b0bec631034-12.mp3"><button
+                                  class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
                             </td>
                             <td>Eminem songs <span class="badge badge-primary ml-3">2:30</span></td>
                             <td>Eminem</td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
                             </td>
-                          </tr> 
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -372,15 +314,15 @@
 
                   <!-- TODO: listSong -->
                   <!-- Page List Song -->
-                  <div id="page-add-playlist" style="display: none;">
+                  <div id="page-search-song" style="display: none;">
                     <h2><strong>List</strong> Music</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                        <ul class="dropdown-menu dropdown-menu-right slideUp">
+                        <!-- <ul class="dropdown-menu dropdown-menu-right slideUp">
                           <li><a href="javascript:void(0);">Edit Playlist</a></li>
                           <li><a href="javascript:void(0);">Delete Playslist</a></li>
-                        </ul>
+                        </ul> -->
                       </li>
                       <!-- <li class="remove">
                       <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
@@ -444,7 +386,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -456,7 +397,7 @@
 
     <!-- TODO: pageAuthentication -->
     <!-- Login Sidebar -->
-    <div class="authentication" id="menu" style="display: none;">
+    <div class="authentication" id="page-auth" style="display: block;">
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-sm-12" id="auth">
@@ -491,8 +432,8 @@
                   </div>
                   <div class="signin_with mt-1">
                     <p class="mb-0">or Sign Up using</p>
-                    <button class="btn btn-info btn-icon btn-icon-mini btn-round google g-signin2"
-                      data-onsuccess="onSignIn"><i class="zmdi zmdi-google"></i></button>
+                    <button class="btn btn-link btn-icon btn-md btn-icon-mini btn-round g-signin2"
+                      data-onsuccess="onSignIn"></button>
                   </div>
                 </div>
               </form>
@@ -545,11 +486,11 @@
               </form>
             </div>
 
-        <!-- START SIGN OUT GOOGLE -->
-        <div class="btn btn-danger text-decoration-none">
-          <a class="text-white" href="#" onclick="signOut();">Sign out</a>
-        </div>
-        <!-- END OF SIGN OUT GOOGLE -->
+            <!-- START SIGN OUT GOOGLE -->
+            <div class="btn btn-danger text-decoration-none">
+              <a class="text-white" href="#" onclick="signOut();">Sign out</a>
+            </div>
+            <!-- END OF SIGN OUT GOOGLE -->
             <!-- Footer -->
             <div class="copyright text-center">
               <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
@@ -574,15 +515,10 @@
 
   <script src="public/js/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
 
-
-  <script src="public/plugins/sweetalert2/sweetalert2.all.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
-  <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script> -->
-  <script src="public/plugins/sweetalert2/promise-polyfill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
   <script type="text/javascript" src="index.js"></script>
-  <script type="text/javascript" src="play-song.js"></script>
 
   <script src="https://apis.google.com/js/platform.js" async defer></script><!-- oauth goole -->
 

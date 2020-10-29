@@ -1,3 +1,4 @@
+
 function showLogin(e) {
   e.preventDefault()
   $("#form-register").hide()
@@ -8,9 +9,30 @@ function login(e) {
   e.preventDefault()
   const username = $("#login-username").val()
   const password = $("#login-password").val()
-  sweetAlert()
-  alert(`Login ${username} & ${password}`)
+  // sweetAlert()
+  // alert(`Login ${username} & ${password}`)
   // alert(`Login`)
+  afterLogin(e)
+}
+
+function afterLogin(e) {
+  $("#login-username").val('')
+  $("#login-password").val('')
+  home(e)
+}
+
+function home(e) {
+  e.preventDefault()
+  $("#navbar-right").show();
+  $("#page-auth").hide();
+  $("form-login").hide();
+  $("form-register").hide();
+  $("#page-home").show();
+  $("#page-home").show();
+  $("#page-playlist").show();
+  $("#page-detail-playlist").hide();
+  $("#page-search-song").hide();
+  pauseAudio()
 }
 
 function showRegister(e) {
@@ -20,12 +42,39 @@ function showRegister(e) {
 }
 
 function register(e) {
-  e.preventDefault()
+  e.preventDefault();
   const username = $("#register-username").val()
   const eamil = $("#register-email").val()
   const password = $("#register-password").val()
   const retypePassword = $("#register-retype-password").val()
-  alert(`Login ${username} & ${password} & ${eamil} & ${retypePassword}`)
+  alert(`Login ${username} & ${password} & ${eamil} & ${retypePassword}`);
+  afterRegister(e)
+}
+
+function afterRegister(e) {
+  e.preventDefault();
+  $("#register-username").val('')
+  $("#register-email").val('')
+  $("#register-password").val('')
+  $("#register-retype-password").val('')
+  showLogin(e)
+}
+
+function beforeSignOut(e) {
+  e.preventDefault()
+  Swal.fire({
+    title: 'Are you sure Want Logout?',
+    text: "You will redirect to login page!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Logout!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      afterSignOut(e);
+    }
+  })
 }
 
 function onSignIn(googleUser) {
@@ -36,7 +85,7 @@ function onSignIn(googleUser) {
   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
   let google_access_token = googleUser.getAuthResponse().id_token;
-  
+
   $.ajax({
     method: 'POST',
     url: 'http://localhost:3000/googleLogin',
@@ -44,21 +93,101 @@ function onSignIn(googleUser) {
       google_access_token
     }
   })
-  .done(response=>{
-    console.log(response)
-  })
-  .fail(err=>{
-    console.log(err)
+    .done(response => {
+      console.log(response)
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
+function signOut(e) {
+  // var auth2 = gapi.auth2.getAuthInstance();
+  // auth2.signOut().then(function () {
+  //   console.log('User signed out.');
+  // });
+  beforeSignOut(e)
+}
+
+function afterSignOut(e) {
+  e.preventDefault()
+  $("#page-auth").show();
+  $("form-login").show();
+  $("#navbar-right").hide();
+  $("form-register").hide();
+  $("#page-home").hide();
+  $("#page-home").hide();
+  $("#page-playlist").hide();
+  $("#page-detail-playlist").hide();
+  $("#page-search-song").hide();
+  pauseAudio();
+  showLogin(e);
+}
+
+function editPlaylist(e) {
+
+}
+
+function deletePlaylist(e) {
+  e.preventDefault()
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your playlist has been deleted.',
+        'success'
+      )
+    }
   })
 }
 
-function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  //showLogin(e);
+function deleteSong(e) {
+  e.preventDefault()
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your song has been deleted from playlist.',
+        'success'
+      )
+    }
+  })
 }
+
+function showPlaylist(e) {
+  e.preventDefault();
+  $("#page-playlist").show();
+  $("#page-detail-playlist").hide();
+}
+
+function showPlaylistDetail(e) {
+  $("#page-playlist").hide();
+  $("#page-detail-playlist").show();
+}
+
+function addSong(e) {
+  e.preventDefault()
+  $("#page-playlist").hide();
+  $("#page-detail-playlist").hide();
+  $("#page-search-song").show();
+}
+
 
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
@@ -118,5 +247,41 @@ function sweetAlert() {
   //     console.log(response);
   //   }
   // })
-    
+
 }
+
+function pauseAudio() {
+  $("audio").not(this).each(function (index, audio) {
+    audio.pause();
+  });
+}
+
+$('.play-audio').click(function () {
+  var d = $(this).data('datac');
+  var audio = document.getElementById('audio'); 
+  var source = document.getElementById('audioSource');
+  source.src = d;
+ 
+  audio.load(); //call this to just preload the audio without playing
+  audio.play(); //call this to play the song right away
+ 
+});
+
+
+$(function () {
+  $("audio").on("play", function () {
+    $("audio").not(this).each(function (index, audio) {
+      audio.pause();
+    });
+  });
+});
+
+
+// $(function () {
+//   $("audio").on("play", function () {
+//     $("audio").not(this).each(function (index, audio) {
+//       audio.pause();
+//     });
+//   });
+// });
+// Playlist
