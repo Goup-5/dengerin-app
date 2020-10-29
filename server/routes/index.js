@@ -8,8 +8,11 @@ const authentication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')
 
 
+//Router Landing ================================================================
+router.post('/googleLogin', LandingController.googleLogin)
 router.post('/register', LandingController.register)
 router.post('/login', LandingController.login)
+
 
 router.use(authentication)
 
