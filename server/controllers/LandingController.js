@@ -74,7 +74,7 @@ class LandingController {
         .then(ticket=>{
           const payload = ticket.getPayload();
           username = payload.email
-          email = payload.email
+          email = payload.email 
           return User.findOne({where:{email}})
         })
         .then(user=>{
@@ -84,7 +84,7 @@ class LandingController {
             let newUser = {
                 username,
                 email,
-                password:'random'
+                password:'12345678'
             }
             return User.create(newUser)
           }
