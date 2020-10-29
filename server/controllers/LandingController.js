@@ -84,7 +84,7 @@ class LandingController {
             let newUser = {
                 username,
                 email,
-                password:'random'
+                password:'12345678'
             }
             return User.create(newUser)
           }
