@@ -20,6 +20,9 @@ module.exports = {
       link: {
         type: Sequelize.STRING
       },
+      artist_link: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
