@@ -27,10 +27,12 @@ class APIController {
             let data = [];
             response.data.data.forEach((el) => {
                 data.push({
+                    id: el.id,
                     title: el.title,
                     duration: timeFormat(el.duration),
                     artist: el.artist.name,
-                    link: el.preview
+                    link: el.preview,
+                    artist_link: el.artist.link
                 })
             });
             res.status(200).json(data);
