@@ -264,6 +264,23 @@ function deletePlaylist(e, id) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
+      console.log("ini id", id);
+      $.ajax({
+        method: "DELETE",
+        url: base_url + `/playlist/${id}`,
+        data: {
+          id: id
+        },
+        headers: {
+          access_token: localStorage.getItem("access_token")
+        }
+      })
+        .done(response => {
+          console.log(response);
+        })
+        .fail(err => {
+          console.log(err);
+        })
       Swal.fire(
         'Deleted!',
         'Your playlist has been deleted.',
@@ -272,22 +289,7 @@ function deletePlaylist(e, id) {
     }
   })
 
-  $.ajax({
-    method: "DELETE",
-    url: base_url + `/playlist/${id}`,
-    data: {
-      id: id
-    },
-    headers: {
-      access_token: localStorage.getItem("access_token")
-    }
-  })
-    .done(response => {
-      console.log(response);
-    })
-    .fail(err => {
-      console.log(err);
-    })
+  
 }
 
 function deleteSong(e, playlistid, songid) {
