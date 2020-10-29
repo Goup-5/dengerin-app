@@ -18,6 +18,11 @@ function login(e) {
   prosesLogin(input, e)
 }
 
+function googleLogin(e) {
+  e.preventDefault()
+  afterLogin(e)
+}
+
 function prosesLogin(input, e) {
   const { username, email, password } = input;
   $.ajax({
