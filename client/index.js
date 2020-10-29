@@ -214,14 +214,45 @@ function afterSignOut(e) {
 
 function addPlaylist(e) {
   e.preventDefault()
-  alert('clicked')
+  const playlist_name = $("#playlistname").val()
+
+  $.ajax({
+    method: "POST",
+    url: base_url + "/playlist",
+    data: {
+      playlist_name: playlist_name
+    },
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+    .done(response => {
+      console.log(response);
+      $("#tabel-playlist").append(`
+      <tr>
+        <td>${response.id}</td>
+        <td>${response.playlist_name}<span class="badge badge-primary ml-3">99 songs</span></td>
+        <td class="float-right">
+          <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+              class="zmdi zmdi-edit"></i></button>
+          <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${response.id})"><i
+              class="zmdi zmdi-delete"></i></button>
+          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(event)"><i
+              class="zmdi zmdi-open-in-new"></i></button>
+        </td>
+      </tr>
+      `)
+    })
+    .fail(err => {
+      console.log(err);
+    })
 }
 
 function editPlaylist(e) {
 
 }
 
-function deletePlaylist(e) {
+function deletePlaylist(e, id) {
   e.preventDefault()
   Swal.fire({
     title: 'Are you sure?',
@@ -233,6 +264,23 @@ function deletePlaylist(e) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
+      console.log("ini id", id);
+      $.ajax({
+        method: "DELETE",
+        url: base_url + `/playlist/${id}`,
+        data: {
+          id: id
+        },
+        headers: {
+          access_token: localStorage.getItem("access_token")
+        }
+      })
+        .done(response => {
+          console.log(response);
+        })
+        .fail(err => {
+          console.log(err);
+        })
       Swal.fire(
         'Deleted!',
         'Your playlist has been deleted.',
@@ -240,6 +288,8 @@ function deletePlaylist(e) {
       )
     }
   })
+
+  
 }
 
 function deleteSong(e, playlistid, songid) {
