@@ -64,7 +64,7 @@ class SongController {
             const songid = req.params.songid;
             let songPlaylist = await PlaylistSong.destroy({where:{SongId:songid}});
             let song = await Song.destroy({where:{id:songid}})
-            res.status(200).json(song);
+            res.status(200).json({message: `Song ${songid} deleted`});
         } catch (err) {
             next(err)
         }

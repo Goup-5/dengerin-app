@@ -21,15 +21,16 @@ router.use(authentication)
 //Router Playlist ================================================================
 router.get('/playlist', PLayListController.readPlaylist)
 router.post('/playlist', PLayListController.createPlaylist)
-router.get('/playlist/:id', PLayListController.getPlaylistById)
+router.get('/playlist/:id', authorization, PLayListController.getPlaylistById)
 router.put('/playlist/:id', authorization, PLayListController.updateAllPlaylistId)
 // router.patch('/playlist/:id', authorization, PLayListController.updateSongPlaylistId)
 router.delete('/playlist/:id', authorization, PLayListController.deletePlaylistId)
 
 //Router Song ====================================================================
 router.post('/playlist/:id/song', SongController.searchSongs)
-router.post('/playlist/:id/song/:search/:songid', SongController.addSong) // id = playlist id, songid = id song deezer nya
-// router.delete('/playlist/:id/song/:search/:songid', SongController.addSong) // id = playlist id, songid = id song deezer nya
+router.post('/playlist/:id/song/:search/:songid', authorization, SongController.addSong) // id = playlist id, songid = id song deezer nya
+router.delete('/playlist/:id/song/:songid', authorization, SongController.deleteSong) // id = playlist id, songid = id local db
+// router.
 
 
 
