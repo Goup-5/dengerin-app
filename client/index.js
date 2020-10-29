@@ -66,7 +66,7 @@ function afterLogin() {
   home()
 }
 
-function home() { 
+function home() {
   $("#navbar-right").show();
   $("#page-auth").hide();
   $("form-login").hide();
@@ -154,10 +154,10 @@ function onSignIn(googleUser) {
       google_access_token
     }
   })
-    .done(response => { 
+    .done(response => {
       console.log(response.access_token)
       afterLogin()
-      saveToken(response.access_token)  
+      saveToken(response.access_token)
     })
     .fail(err => {
       console.log(err)
@@ -181,20 +181,20 @@ function beforeSignOut(e) {
     }
   })
 }
- 
+
 function signOut(e) {
   beforeSignOut(e)
 }
 
 //ceeeek dulu
-function logout() { 
+function logout() {
   localStorage.clear()
   //sign out google
   let auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut()
-  .then(function () {
-    console.log('User signed out.');
-  }); 
+    .then(function () {
+      console.log('User signed out.');
+    });
 }
 
 function afterSignOut(e) {
@@ -306,13 +306,13 @@ function deleteSong(e, playlistid, songid) {
       $.ajax({
         method: "DELETE",
         url: `${base_url}/playlist/${playlistid}/song/${songid}`,
-        headers: {access_token},
+        headers: { access_token },
       })
-      .done(response => {
-        console.log(response);
-        showPlaylistDetail(playlistid)
-      })
-      .fail(err => console.log(err));
+        .done(response => {
+          console.log(response);
+          showPlaylistDetail(playlistid)
+        })
+        .fail(err => console.log(err));
       Swal.fire(
         'Deleted!',
         'Your song has been deleted from playlist.',
@@ -329,13 +329,13 @@ function showPlaylist() {
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist`,
-    headers: {access_token}
+    headers: { access_token }
   })
-  .done(response => {
-    console.log(response)
-    $("#tabel-playlist").empty();
-    response.forEach((el, i) => {
-      $("#tabel-playlist").append(`
+    .done(response => {
+      console.log(response)
+      $("#tabel-playlist").empty();
+      response.forEach((el, i) => {
+        $("#tabel-playlist").append(`
                           <tr>
                             <td>${i}</td>
                             <td>${el.playlist_name} <span class="badge badge-primary ml-3">${el.Songs.length} songs</span></td>
@@ -349,10 +349,10 @@ function showPlaylist() {
                             </td>
                           </tr>
       `)
+      })
+
     })
-      
-  })
-  .fail(err => console.log(err))
+    .fail(err => console.log(err))
 }
 
 function showPlaylistDetail(id) {
@@ -363,13 +363,34 @@ function showPlaylistDetail(id) {
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist/${id}/song`,
-    headers: {access_token},
+    headers: { access_token },
   })
-  .done(response => {
-    console.log(response)
-    $(".song-list").empty();
-    response.Songs.forEach((el, i) => {
-      $(".song-list").append(`
+    .done(response => {
+      console.log(response)
+      $(".song-list").empty();
+      response.Songs.forEach((el, i) => { 
+        const list =
+/* html */ `<tr>
+          <td>${i + 1}</td>
+            <td>
+              <a id="${el.id}" onclick="playAudio(event, ${el.id})" class="play-audio" href="#"
+                data-datac="${el.link}"><button
+                  class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
+            </td>
+            <td>${el.title}<span class="badge badge-primary ml-3">${el.duration}</span></td>
+            <td>${el.artist}</td>
+            <td class="float-right">
+              <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
+                  class="zmdi zmdi-delete"></i></button>
+            </td>
+          </tr>`
+
+        $(".song-list").append(list)
+        // var a = $('#mydiv').data('myval'); //getter 
+        // $(`#${el.id}`).data('datac', el.link);
+      })
+      /**
+       * `
         <tr>
           <td>${i}</td>
           <td>
@@ -387,11 +408,11 @@ function showPlaylistDetail(id) {
                 class="zmdi zmdi-delete"></i></button>
           </td>
         </tr>
-      `)
+      `
+       */
+
     })
-      
-  })
-  .fail(err => console.log(err))
+    .fail(err => console.log(err))
 }
 
 function addSong(e) {
@@ -400,7 +421,7 @@ function addSong(e) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").show();
 }
- 
+
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 
@@ -422,26 +443,33 @@ function sweetAlert() {
           })
         })
     }
-  }]) 
+  }])
 }
 
 function pauseAudio() {
   $("audio").not(this).each(function (index, audio) {
     audio.pause();
   });
-}Y
+} Y
 
-function playAudio(src){
+function playAudio(e, id) {
+  e.preventDefault();
+  var d = $(`#${id}`).data('datac');  
+  console.log('datac', d)
+  console.log('id', id)
   var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
-  source.src = src;
-
+  source.src = d;
   audio.load(); //call this to just preload the audio without playing
-  audio.play(); //call this to play the song right away
+  audio.play(); //call this to play the song right away 
 }
+
+
+
 $('.play-audio').click(function () {
   var d = $(this).data('datac');
-  console.log(d)
+  console.log('datac', d)
+  alert(d)
   var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
   source.src = d;
