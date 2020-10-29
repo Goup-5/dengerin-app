@@ -90,7 +90,7 @@ class LandingController {
           }
         })
         .then(data=>{
-            let access_token = signToken({id: data.id, email:data.email})
+            let access_token = signToken({id: data.id, username: data.username, email:data.email})
             res.status(200).json({access_token})
         })
         .catch(err=>{

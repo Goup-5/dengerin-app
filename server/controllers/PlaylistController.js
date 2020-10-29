@@ -26,6 +26,7 @@ class PLayListController {
   }
 
   static async createPlaylist (req, res, next){
+      console.log(req.headers.access_token)
     try {
       let user = verifyToken(req.headers.access_token)
       let payload = {
