@@ -76,8 +76,7 @@ function home() {
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
-  showPlaylist(e);
-  
+  showPlaylist()
   pauseAudio()
 }
 
@@ -271,8 +270,7 @@ function deleteSong(e, playlistid, songid) {
   })
 }
 
-function showPlaylist(e) {
-  e.preventDefault();
+function showPlaylist() {
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   let access_token = localStorage.getItem("access_token");
