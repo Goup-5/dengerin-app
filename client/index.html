@@ -433,7 +433,7 @@
                   <div class="signin_with mt-1">
                     <p class="mb-0">or Sign Up using</p>
                     <button class="btn btn-link btn-icon btn-md btn-icon-mini btn-round g-signin2"
-                      data-onsuccess="onSignIn"></button>
+                      data-onsuccess="onSignIn" onclick="login(event)"></button>
                   </div>
                 </div>
               </form>
@@ -485,12 +485,6 @@
                 </div>
               </form>
             </div>
-
-            <!-- START SIGN OUT GOOGLE -->
-            <div class="btn btn-danger text-decoration-none">
-              <a class="text-white" href="#" onclick="signOut();">Sign out</a>
-            </div>
-            <!-- END OF SIGN OUT GOOGLE -->
             <!-- Footer -->
             <div class="copyright text-center">
               <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
