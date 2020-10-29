@@ -27,6 +27,8 @@ router.delete('/playlist/:id', authorization, PLayListController.deletePlaylistI
 
 //Router 3rd Party API !!!! ini masih gua taro sebelum authen, nanti mah taro dibawah, soalnya authen-nya belum bener
 router.post('/search', APIController.searchDeezer)
+router.get('/billboard', APIController.billboard)
+router.get('/randomJokes', APIController.randomJokes)
 
 
 

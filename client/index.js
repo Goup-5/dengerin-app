@@ -188,6 +188,13 @@ function addSong(e) {
   $("#page-search-song").show();
 }
 
+//ceeeek dulu
+// function logout() {
+//   localStorage.removeItem('access_token')
+//   $('#home').hide()
+//   $('#login').show()
+// }
+
 
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
