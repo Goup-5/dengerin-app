@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
-
+  <meta name="google-signin-client_id" content="941832502876-ar1627dk7p6btq88vc663k2gi4mvfk3b.apps.googleusercontent.com">
+  
   <title>Dengerin App</title>
   <!-- Favicon-->
   <link rel="icon" href="public/images/logo.ico" type="image/x-icon">
@@ -78,8 +79,7 @@
                       class="zmdi zmdi-facebook"></i></button>
                   <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i
                       class="zmdi zmdi-twitter"></i></button>
-                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i
-                      class="zmdi zmdi-google"></i></button>
+                      <button class="btn btn-primary btn-icon btn-icon-mini btn-round google g-signin2" data-onsuccess="onSignIn"></button>
                 </div>
               </div>
             </form>
@@ -131,6 +131,14 @@
             </form>
           </div>
 
+        <!-- START OF ADD PLAYLIST -->
+        <!-- sementara display-nya aku none dulu  -->
+          <form style="display: none;" action="/playlists" method="POST">
+            <input type="text" name="playlist_name" placeholder="Add new playlist">
+            <input type="submit" value="Add">
+          </form>
+        <!-- END OF ADD PLAYLIST -->
+
           <div class="copyright text-center">
             <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
                 <script> document.write(new Date().getFullYear()) </script></span></b>
@@ -150,6 +158,7 @@
   <script type="text/javascript" src="public/js/bundles/libscripts.bundle.js"></script>
   <script src="public/js/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
   <script type="text/javascript" src="index.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script><!-- oauth goole -->
 </body>
 
 </html>
