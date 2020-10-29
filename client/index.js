@@ -73,7 +73,7 @@ function home(e) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
 
-  let access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJyYW1hYWRtaW4iLCJpYXQiOjE2MDM5ODAwMDh9.iz11R7fSvyiv96BmBv3tEWi0LeobdHAWjwrbrx7fUcc"
+  let access_token = localStorage.getItem("access_token");
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist`,
