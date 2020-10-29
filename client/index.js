@@ -20,7 +20,7 @@ function login(e) {
 
 function googleLogin(e) {
   e.preventDefault()
-  afterLogin(e)
+  afterLogin()
 }
 
 function prosesLogin(input, e) {
@@ -41,7 +41,7 @@ function prosesLogin(input, e) {
         text: 'Welcome, enjoy dengerin musik!',
         icon: 'success',
         onClose: () => {
-          afterLogin(e)
+          afterLogin()
         }
       })
     })
@@ -60,14 +60,13 @@ function saveToken(access_token) {
   localStorage.setItem('access_token', access_token);
 }
 
-function afterLogin(e) {
+function afterLogin() {
   $("#login-username").val('')
   $("#login-password").val('')
-  home(e)
+  home()
 }
 
-function home(e) {
-  e.preventDefault()
+function home() { 
   $("#navbar-right").show();
   $("#page-auth").hide();
   $("form-login").hide();
@@ -166,6 +165,32 @@ function afterRegister(e) {
   showLogin(e)
 }
 
+function onSignIn(googleUser) {
+  // var profile = googleUser.getBasicProfile();
+  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  // console.log('Name: ' + profile.getName());
+  // console.log('Image URL: ' + profile.getImageUrl());
+  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+  let google_access_token = googleUser.getAuthResponse().id_token;
+
+  $.ajax({
+    method: 'POST',
+    url: 'http://localhost:3000/googleLogin',
+    data: {
+      google_access_token
+    }
+  })
+    .done(response => { 
+      console.log(response.access_token)
+      afterLogin()
+      saveToken(response.access_token)  
+    })
+    .fail(err => {
+      console.log(err)
+    })
+}
+
 function beforeSignOut(e) {
   e.preventDefault()
   Swal.fire({
@@ -178,40 +203,26 @@ function beforeSignOut(e) {
     confirmButtonText: 'Yes, Logout!'
   }).then((result) => {
     if (result.isConfirmed) {
-      localStorage.clear();
+      logout();
       afterSignOut(e);
     }
   })
 }
 
-function onSignIn(googleUser, e) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-  let google_access_token = googleUser.getAuthResponse().id_token;
-
-  $.ajax({
-    method: 'POST',
-    url: 'http://localhost:3000/googleLogin',
-    data: {
-      google_access_token
-    }
-  })
-    .done(response => {
-      console.log(response)
-      localStorage.setItem('access_token', response.access_token)
-    })
-    .fail(err => {
-      console.log(err)
-    })
-}
 
 function signOut(e) {
-  logout()// buat logout si google
   beforeSignOut(e)
+}
+
+//ceeeek dulu
+function logout() { 
+  localStorage.clear()
+  //sign out google
+  let auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut()
+  .then(function () {
+    console.log('User signed out.');
+  }); 
 }
 
 function afterSignOut(e) {
@@ -292,22 +303,7 @@ function addSong(e) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").show();
 }
-
-//ceeeek dulu
-function logout() {
-  $('#home').hide()
-  $('#login').show()
-  localStorage.clear()
-  //sign out google
-  let auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut()
-  .then(function () {
-    console.log('User signed out.');
-  });
-  //sign out google
-}
-
-
+ 
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 
@@ -329,44 +325,7 @@ function sweetAlert() {
           })
         })
     }
-  }])
-  // $.ajax({
-
-  //   url: "simpan-register.php",
-  //   type: "POST",
-  //   data: {
-  //       "nama_lengkap": nama_lengkap,
-  //       "username": username,
-  //       "password": password
-  //   },
-
-  //   success:function(response){
-
-  //     if (response == "success") {
-
-  //       Swal.fire({
-  //         type: 'success',
-  //         title: 'Register Berhasil!',
-  //         text: 'silahkan login!'
-  //       });
-
-  //       $("#nama_lengkap").val('');
-  //       $("#username").val('');
-  //       $("#password").val('');
-
-  //     } else {
-
-  //       Swal.fire({
-  //         type: 'error',
-  //         title: 'Register Gagal!',
-  //         text: 'silahkan coba lagi!'
-  //       });
-
-  //     } 
-  //     console.log(response);
-  //   }
-  // })
-
+  }]) 
 }
 
 function pauseAudio() {
