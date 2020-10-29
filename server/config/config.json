@@ -3,12 +3,12 @@
     "username": "postgres",
     "password": "106565",
     "database": "db_playlist",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "root",
+    "password": "postgres",
     "database": "db_playlist",
     "host": "127.0.0.1",
     "dialect": "postgres"
