@@ -74,7 +74,7 @@ class LandingController {
         .then(ticket=>{
           const payload = ticket.getPayload();
           username = payload.email
-          email = payload.email
+          email = payload.email 
           return User.findOne({where:{email}})
         })
         .then(user=>{
