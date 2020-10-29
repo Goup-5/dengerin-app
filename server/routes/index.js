@@ -7,18 +7,18 @@ const authentication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')
 
 //Router Landing ================================================================
-router.post('/register', LandingController.register)
-router.post('/login', LandingController.login)
+//router.post('/register', LandingController.register)
+//router.post('/login', LandingController.login)
 
 router.use(authentication)
 
 //Router Playlist ================================================================
-router.get('/playlist', PLayListController.readPlaylist)
+/* router.get('/playlist', PLayListController.readPlaylist)
 router.post('/playlist', PLayListController.createPlaylist)
 router.get('/playlist/:id', PLayListController.getPlaylistById)
 router.put('/playlist/:id', authorization, PLayListController.updateAllPlaylistId)
 router.patch('/playlist/:id', authorization, PLayListController.updateSongPlaylistId)
-router.delete('/playlis/:id', authorization, PLayListController.deletePlaylistId)
+router.delete('/playlis/:id', authorization, PLayListController.deletePlaylistId) */
 
 
 //User
