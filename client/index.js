@@ -14,7 +14,45 @@ function login(e) {
   // sweetAlert()
   // alert(`Login ${username} & ${password}`)
   // alert(`Login`)
-  afterLogin(e)
+  const input = { username, password }
+  prosesLogin(input, e)
+}
+
+function prosesLogin(input, e) {
+  const { username, email, password } = input;
+  $.ajax({
+    method: "POST",
+    url: base_url + "/login",
+    data: {
+      username,
+      password
+    }
+  })
+    .done(response => {
+      const token = response.access_token;
+      saveToken(token);
+      Swal.fire({
+        title: 'Access Granted!',
+        text: 'Welcome, enjoy dengerin musik!',
+        icon: 'success',
+        onClose: () => {
+          afterLogin(e)
+        }
+      })
+    })
+    .fail(err => {
+      let message = '';
+      if (Array.isArray(err.responseJSON)) {
+        message = err.responseJSON[0].message;
+      } else {
+        message = err.responseJSON.message;
+      }
+      Swal.fire('Access Denied!', message, 'error')
+    })
+}
+
+function saveToken(access_token) {
+  localStorage.setItem('access_token', access_token);
 }
 
 function afterLogin(e) {
@@ -107,6 +145,7 @@ function beforeSignOut(e) {
     confirmButtonText: 'Yes, Logout!'
   }).then((result) => {
     if (result.isConfirmed) {
+      localStorage.clear();
       afterSignOut(e);
     }
   })
