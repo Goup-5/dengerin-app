@@ -41,11 +41,14 @@ class PLayListController {
 
   static async updateAllPlaylistId (req, res, next) {
     try {
-
-      
-
+      let playlistId = req.params.id;
+      let payload = {
+        playlist_name: req.body.playlist_name
+      }
+      let playlist = await Playlist.update(payload, {where:{id:playlistId}});
+      res.status(200).json(payload)
     } catch (error) {
-
+      next(error);
     }
   }
 
