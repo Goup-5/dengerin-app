@@ -31,6 +31,10 @@
       user-select: none;
     }
 
+    audio {
+      outline: none;
+    }
+
     @media (min-width: 768px) {
       .bd-placeholder-img-lg {
         font-size: .5rem;
@@ -281,7 +285,7 @@
                         <tbody>
                           <tr>
                             <td>01</td>
-                            <td>Playlist Name</td>
+                            <td>Playlist Name <span class="badge badge-primary ml-3">99 songs</span></td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-edit"></i></button>
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
@@ -290,7 +294,7 @@
                           </tr>
                           <tr>
                             <td>02</td>
-                            <td>Playlist Name 2</td>
+                            <td>Playlist Name 2 <span class="badge badge-primary ml-3">10 songs</span></td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-edit"></i></button>
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
@@ -300,11 +304,74 @@
                         </tbody>
                       </table>
                     </div>
+                  </div> 
+
+                  <!-- TODO: detailPlaylist -->
+                  <!-- Page Add Playlist -->
+                  <div id="page-add-playlist" style="display: block;">
+                    <h2><strong>Playlist</strong> Name</h2>
+                    <ul class="header-dropdown">
+                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                          role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                        <ul class="dropdown-menu dropdown-menu-right slideUp">
+                          <li><a href="javascript:void(0);">Add Song</a></li>
+                          <li><a href="javascript:void(0);">Delete Playslist</a></li>
+                        </ul>
+                      </li>
+                      <!-- <li class="remove">
+                      <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
+                    </li> -->
+                    </ul>
+                    <br>
+                    <div class="table-responsive">
+                      <!-- Form Submit Playlist -->
+                      <form onsubmit="">
+                        <div class="input-group mb-4">
+                          <input type="text" class="form-control" placeholder="Type songs here...">
+                          <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary btn-primaryS" type="button"
+                              id="button-addon2">Search Songs</button>
+                          </div>
+                        </div>
+                      </form>
+                      <table class="table table-hover c_table theme-color">
+                        <!-- <thead>
+                          <tr>
+                            <th colspan="3"> 
+                            </th>
+                          </tr>
+                        </thead> -->
+                        <tbody>
+                          <tr>
+                            <td>01</td>
+                            <td>
+                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button>
+                            </td>
+                            <td>Aku Bukan Boneka <span class="badge badge-primary ml-3">2:30</span></td>
+                            <td>Kekeyi</td>
+                            <td class="float-right">
+                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
+                            </td>
+                          </tr> 
+                          <tr>
+                            <td>02</td>
+                            <td>
+                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button>
+                            </td>
+                            <td>Eminem songs <span class="badge badge-primary ml-3">2:30</span></td>
+                            <td>Eminem</td>
+                            <td class="float-right">
+                              <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
+                            </td>
+                          </tr> 
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <!-- TODO: listSong -->
                   <!-- Page List Song -->
-                  <div id="page-add-playlist" style="display: block;">
+                  <div id="page-add-playlist" style="display: none;">
                     <h2><strong>List</strong> Music</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
@@ -388,7 +455,7 @@
 
     <!-- TODO: pageAuthentication -->
     <!-- Login Sidebar -->
-    <div class="authentication" id="menu" style="display: block;">
+    <div class="authentication" id="menu" style="display: none;">
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-sm-12" id="auth">
