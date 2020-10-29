@@ -58,6 +58,17 @@ class SongController {
             next(err)
         }
     }
+
+    static async deleteSong(req, res, next) {
+        try {
+            const songid = req.params.songid;
+            let songPlaylist = await PlaylistSong.destroy({where:{SongId:songid}});
+            let song = await Song.destroy({where:{id:songid}})
+            res.status(200).json(song);
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = SongController
