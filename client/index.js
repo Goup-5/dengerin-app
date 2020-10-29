@@ -151,7 +151,7 @@ function beforeSignOut(e) {
   })
 }
 
-function onSignIn(googleUser) {
+function onSignIn(googleUser, e) {
   var profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   console.log('Name: ' + profile.getName());
@@ -169,6 +169,7 @@ function onSignIn(googleUser) {
   })
     .done(response => {
       console.log(response)
+      localStorage.setItem('access_token', response.access_token)
     })
     .fail(err => {
       console.log(err)
@@ -176,10 +177,7 @@ function onSignIn(googleUser) {
 }
 
 function signOut(e) {
-  // var auth2 = gapi.auth2.getAuthInstance();
-  // auth2.signOut().then(function () {
-  //   console.log('User signed out.');
-  // });
+  logout()// buat logout si google
   beforeSignOut(e)
 }
 
@@ -263,11 +261,18 @@ function addSong(e) {
 }
 
 //ceeeek dulu
-// function logout() {
-//   localStorage.removeItem('access_token')
-//   $('#home').hide()
-//   $('#login').show()
-// }
+function logout() {
+  $('#home').hide()
+  $('#login').show()
+  localStorage.clear()
+  //sign out google
+  let auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut()
+  .then(function () {
+    console.log('User signed out.');
+  });
+  //sign out google
+}
 
 
 function sweetAlert() {
