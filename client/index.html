@@ -6,8 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
-  <meta name="google-signin-client_id"
-    content="941832502876-ar1627dk7p6btq88vc663k2gi4mvfk3b.apps.googleusercontent.com">
 
   <title>Dengerin App</title>
   <!-- Favicon-->
@@ -257,48 +255,30 @@
                     </li>
                   </ul>
                 </div>
-                <div class="signin_with mt-1">
-                  <p class="mb-0">or Sign Up using</p>
-                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i
-                      class="zmdi zmdi-facebook"></i></button>
-                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i
-                      class="zmdi zmdi-twitter"></i></button>
-
-                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i
-                      class="zmdi zmdi-google"></i></button>
-                  <button class="btn btn-primary btn-icon btn-icon-mini btn-round google g-signin2"
-                    data-onsuccess="onSignIn"></button>
-                  <div class="body">
-                  </div>
+                <div class="body">
+                  <!-- START OF ADD PLAYLIST -->
+                  <!-- sementara display-nya aku none dulu  -->
+                  <form style="display: block;" action="/playlists" method="POST">
+                    <input type="text" name="playlist_name" placeholder="Add new playlist">
+                    <input type="submit" value="Add">
+                  </form>
+                  <!-- END OF ADD PLAYLIST -->
                 </div>
               </div>
             </div>
-
-            <div id="form-register" style="display: none;">
-              <form class="card auth_form" onsubmit="register(event)">
-                <div class="header">
-                  <img class="logo" src="public/images/logo.png" alt="">
-                  <h5>Sign Up</h5>
-                  <span>Register a new membership</span>
-                </div>
-                <div class="body">
-                  <div class="input-group mb-3">
-                    <div class="input-group-append">
-                      <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
-                    </div>
-                    <input type="text" class="form-control" id="register-username" placeholder="Username" required>
-                  </div>
-                </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Login Sidebar -->
-    <div class="authentication" id="page-login" style="display: none;">
+    <div class="authentication" id="menu" style="display: block;">
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-sm-12" id="auth">
 
             <!-- Form Login -->
-            <div id="form-login" style="display: none;">
+            <div id="form-login" style="display: block;">
               <form id="login_form" class="card auth_form" onsubmit="login(event)">
                 <div class="header">
                   <img class="logo" src="public/images/logo.png" alt="">
@@ -327,12 +307,8 @@
                   </div>
                   <div class="signin_with mt-1">
                     <p class="mb-0">or Sign Up using</p>
-                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i
-                        class="zmdi zmdi-facebook"></i></button>
-                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i
-                        class="zmdi zmdi-twitter"></i></button>
-                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i
-                        class="zmdi zmdi-google"></i></button>
+                    <button class="btn btn-info btn-icon btn-icon-mini btn-round google g-signin2"
+                      data-onsuccess="onSignIn"><i class="zmdi zmdi-google"></i></button>
                   </div>
                 </div>
               </form>
@@ -385,32 +361,20 @@
               </form>
             </div>
 
-
-            <!-- START OF ADD PLAYLIST -->
-            <!-- sementara display-nya aku none dulu  -->
-            <form style="display: none;" action="/playlists" method="POST">
-              <input type="text" name="playlist_name" placeholder="Add new playlist">
-              <input type="submit" value="Add">
-            </form>
-            <!-- END OF ADD PLAYLIST -->
-
+            <!-- Footer -->
             <div class="copyright text-center">
               <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
                   <script> document.write(new Date().getFullYear()) </script></span></b>
-              <!-- Footer -->
-              <div class="copyright text-center">
-                <b><span>Denger<span class="text-pindex.jsimary">In</span> &COPY;
-                    <script> document.write(new Date().getFullYear()) </script></span></b>
-              </div>
             </div>
-            <div class="col-lg-8 col-sm-12">
-              <div class="card">
-                <img src="public/images/music.jpg" alt="Sign In" />
-              </div>
+          </div>
+          <div class="col-lg-8 col-sm-12">
+            <div class="card">
+              <img src="public/images/music.jpg" alt="Sign In" />
             </div>
           </div>
         </div>
       </div>
+    </div>
 
   </main>
   <script type="text/javascript" src="public/js/jquery/jquery.js"></script>
