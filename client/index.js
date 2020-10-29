@@ -72,6 +72,34 @@ function home(e) {
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
+
+  let access_token = localStorage.getItem("access_token");
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/playlist`,
+    headers: {access_token}
+  })
+  .done(response => {
+    console.log(response)
+    response.forEach((el, i) => {
+      $("#tabel-playlist").append(`
+                          <tr>
+                            <td>${i}</td>
+                            <td>${el.playlist_name} <span class="badge badge-primary ml-3">99 songs</span></td>
+                            <td class="float-right">
+                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+                                  class="zmdi zmdi-edit"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
+                                  class="zmdi zmdi-delete"></i></button>
+                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(event)"><i
+                                  class="zmdi zmdi-open-in-new"></i></button>
+                            </td>
+                          </tr>
+      `)
+    })
+      
+  })
+  .fail(err => console.log(err))
   pauseAudio()
 }
 
