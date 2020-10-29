@@ -176,7 +176,7 @@
 
                   <!-- TODO: addPlaylist -->
                   <!-- Page Add Playlist -->
-                  <div id="page-playlist" style="display: none;">
+                  <div id="page-playlist" style="display: none;" onload="showPlaylist(event)">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
                       <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
@@ -279,8 +279,8 @@
                             </th>
                           </tr>
                         </thead> -->
-                        <tbody id="list">
-                          <tr>
+                        <tbody id="list" class="song-list">
+                          <!-- <tr>
                             <td>01</td>
                             <td>
                               <a class="play-audio" href="#"
@@ -306,7 +306,7 @@
                             <td class="float-right">
                               <button class="btn btn-default btn-sm"><i class="zmdi zmdi-delete"></i></button>
                             </td>
-                          </tr>
+                          </tr> -->
                         </tbody>
                       </table>
                     </div>
