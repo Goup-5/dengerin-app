@@ -10,6 +10,7 @@ const authorization = require('../middleware/authorization')
 //Router Landing ================================================================
 //router.post('/register', LandingController.register)
 //router.post('/login', LandingController.login)
+router.post('/googleLogin', LandingController.googleLogin)
 
 router.use(authentication)
 
