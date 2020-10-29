@@ -208,8 +208,7 @@ function beforeSignOut(e) {
     }
   })
 }
-
-
+ 
 function signOut(e) {
   beforeSignOut(e)
 }
@@ -238,6 +237,11 @@ function afterSignOut(e) {
   $("#page-search-song").hide();
   pauseAudio();
   showLogin(e);
+}
+
+function addPlaylist(e) {
+  e.preventDefault()
+  alert('clicked')
 }
 
 function editPlaylist(e) {
