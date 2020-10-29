@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const { errorHandler } = require('./middleware/errorHandler');
 const createError = require('http-errors');
@@ -6,7 +5,10 @@ const express = require('express');
 const router = require('./routes');
 const app = express();
 const port = process.env.PORT || 3000;
+const cors = require('cors')
 
+
+app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
