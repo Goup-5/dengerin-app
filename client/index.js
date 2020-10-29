@@ -287,9 +287,7 @@ function deletePlaylist(e, id) {
         'success'
       )
     }
-  })
-
-  
+  }) 
 }
 
 function deleteSong(e, playlistid, songid) {
