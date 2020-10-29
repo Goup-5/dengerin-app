@@ -1,9 +1,10 @@
-const { Song } = require('../models/index')
+const { Song, PlaylistSong } = require('../models/index')
 
 class SongController {
-    static async Song(req, res, next) {
+    static async searchSongs(req, res, next) {
         try {
-
+            let payload = {
+            }
         } catch (err) {
 
         }

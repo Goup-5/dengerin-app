@@ -21,6 +21,9 @@ router.put('/playlist/:id', authorization, PLayListController.updateAllPlaylistI
 // router.patch('/playlist/:id', authorization, PLayListController.updateSongPlaylistId)
 router.delete('/playlist/:id', authorization, PLayListController.deletePlaylistId)
 
+//Router Song =========================
+router.post('/playlist/song', APIController.searchSongs)
+
 
 //Router 3rd Party API !!!! ini masih gua taro sebelum authen, nanti mah taro dibawah, soalnya authen-nya belum bener
 router.post('/search', APIController.searchDeezer)
