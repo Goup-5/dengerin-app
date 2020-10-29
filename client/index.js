@@ -1,4 +1,6 @@
 
+const base_url = "http://localhost:3000";
+
 function showLogin(e) {
   e.preventDefault()
   $("#form-register").hide()
@@ -44,11 +46,44 @@ function showRegister(e) {
 function register(e) {
   e.preventDefault();
   const username = $("#register-username").val()
-  const eamil = $("#register-email").val()
+  const email = $("#register-email").val()
   const password = $("#register-password").val()
   const retypePassword = $("#register-retype-password").val()
-  alert(`Login ${username} & ${password} & ${eamil} & ${retypePassword}`);
-  afterRegister(e)
+  const input = { username, email, password };
+  processRegister(input, e)
+}
+
+function processRegister(input, e) {
+  const { username, email, password } = input;
+  $.ajax({
+    method: "POST",
+    url: base_url + "/register",
+    data: {
+      username,
+      email,
+      password
+    }
+  })
+    .done(response => {
+      Swal.fire({
+        title: 'Register Succesfully!',
+        text: 'Please Login first!',
+        icon: 'success',
+        onClose: () => {
+          afterRegister(e)
+        }
+      })
+    })
+    .fail(err => {
+      let message = '';
+      if (Array.isArray(err.responseJSON)) {
+        message = err.responseJSON[0].message;
+      } else {
+        message = err.responseJSON.message;
+      }
+      Swal.fire('Register Failed!', message, 'error')
+      console.log(err.responseJSON[0].message)
+    })
 }
 
 function afterRegister(e) {
@@ -270,13 +305,13 @@ function pauseAudio() {
 
 $('.play-audio').click(function () {
   var d = $(this).data('datac');
-  var audio = document.getElementById('audio'); 
+  var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
   source.src = d;
- 
+
   audio.load(); //call this to just preload the audio without playing
   audio.play(); //call this to play the song right away
- 
+
 });
 
 
