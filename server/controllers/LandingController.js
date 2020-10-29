@@ -3,7 +3,7 @@ const { comparePassword } = require('../helper/bcrypt')
 const { signToken } = require('../helper/jwt')
 
 class LandingController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         try {
            const payload = {
                 username: req.body.username,
@@ -18,11 +18,11 @@ class LandingController {
                 email: user.email
            })
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 
-    static async login(req, res) {
+    static async login(req, res, next) {
         try {
             const payload = {
                 username: req.body.username,
@@ -57,7 +57,7 @@ class LandingController {
                 })
             }
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }
