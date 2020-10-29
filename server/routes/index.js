@@ -26,6 +26,7 @@ router.put('/playlist/:id', authorization, PLayListController.updateAllPlaylistI
 router.delete('/playlist/:id', authorization, PLayListController.deletePlaylistId)
 
 //Router Song ====================================================================
+router.get('/playlist/:id/song', SongController.getSongs)
 router.post('/playlist/:id/song', SongController.searchSongs)
 router.post('/playlist/:id/song/:search/:songid', authorization, SongController.addSong) // id = playlist id, songid = id song deezer nya
 router.delete('/playlist/:id/song/:songid', authorization, SongController.deleteSong) // id = playlist id, songid = id local db
