@@ -2,6 +2,8 @@ const APIController = require('../controllers/APIController');
 const LandingController = require('../controllers/LandingController');
 const PLayListController = require('../controllers/PlaylistController'); 
 const UserController = require('../controllers/UserController'); 
+const SongController = require('../controllers/SongController'); 
+
 const router = require('express').Router();
 
 const authentication = require('../middleware/authentication')
@@ -23,6 +25,13 @@ router.get('/playlist/:id', PLayListController.getPlaylistById)
 router.put('/playlist/:id', authorization, PLayListController.updateAllPlaylistId)
 // router.patch('/playlist/:id', authorization, PLayListController.updateSongPlaylistId)
 router.delete('/playlist/:id', authorization, PLayListController.deletePlaylistId)
+
+//Router Song ====================================================================
+router.post('/playlist/:id/song', SongController.searchSongs)
+router.post('/playlist/:id/song/:search/:songid', SongController.addSong) // id = playlist id, songid = id song deezer nya
+// router.delete('/playlist/:id/song/:search/:songid', SongController.addSong) // id = playlist id, songid = id song deezer nya
+
+
 
 
 //Router 3rd Party API !!!! ini masih gua taro sebelum authen, nanti mah taro dibawah, soalnya authen-nya belum bener

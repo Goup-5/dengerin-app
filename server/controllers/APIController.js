@@ -1,4 +1,6 @@
 const { default: Axios } = require('axios')
+const { PlaylistSong, Song } = require('../models/index')
+const timeFormat = require('../helper/secToMinutes')
 
 class APIController {
 
