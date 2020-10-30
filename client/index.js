@@ -95,6 +95,7 @@ function home() {
   $('#song-list').empty();
   showPlaylist()
   pauseAudio()
+  showJokes()
 }
 
 function showRegister(e) {
@@ -571,3 +572,28 @@ $(function () {
     });
   });
 });
+
+function showJokes(){
+  let access_token = localStorage.getItem("access_token");
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/randomJokes`,
+    headers: { access_token }
+  })
+  .done(response=>{
+    console.log(response)
+  })
+  .fail(err=>{
+    console.log(err)
+  })
+}
+
+
+// $(function () {
+//   $("audio").on("play", function () {
+//     $("audio").not(this).each(function (index, audio) {
+//       audio.pause();
+//     });
+//   });
+// });
+// Playlist
