@@ -686,6 +686,7 @@ function showChart(e) {
   e.preventDefault()
   $("#page-playlist").hide();
   $("#page-chart").show();
+  showBillboard()
 }
 
 
@@ -733,10 +734,10 @@ function showBillboard() {
       const list = `
       <tr>
         <td>${key}</td>
-        <td>${response[key].album} <span class="badge badge-primary ml-3">${response[key].album}</span></td>
+        <td>${response[key].album} <span class="badge badge-primary ml-3">${response[key].artist}</span></td>
       </tr>
       `
-      $("#showbillboard").append(list);
+      $("#list-chart-album").append(list);
     }
 
   })
