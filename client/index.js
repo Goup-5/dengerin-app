@@ -1,6 +1,8 @@
 
 const base_url = "http://localhost:3000";
 
+
+let currentPlaylistId
 $(document).ready(function () {
   $.ajax({
     method: "GET",
@@ -264,7 +266,7 @@ function addPlaylist(e) {
               class="zmdi zmdi-edit"></i></button>
           <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${response.id})"><i
               class="zmdi zmdi-delete"></i></button>
-          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(event)"><i
+          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${response.id})"><i
               class="zmdi zmdi-open-in-new"></i></button>
         </td>
       </tr>
@@ -375,6 +377,52 @@ function deletePlaylist(e, playlistid) {
   })
 }
 
+function searchSong(e) {
+  e.preventDefault()
+  const search_name = $("#searchname").val()
+  $.ajax({
+    method: "POST",
+    url: base_url + `/playlist/${currentPlaylistId}/song`,
+    data: {
+      q: search_name
+    },
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+  .done(response => {
+    response.forEach(element => {
+      $("#searchlist").append(`
+    <div class="col-lg-4 col-md-12">
+      <div class="card small_mcard_1">
+        <div class="user">
+          <img
+            src="${element.artist_link}"
+            alt="profile-image">
+          <div class="details">
+            <h6 class="mb-0 mt-2">${element.artist}</h6>
+            <p class="mb-0"><small>${element.title}</small></p>
+            <button class="btn btn-primary" onclick="addToPlaylist(event)" >Add to Playlist</button>
+          </div>
+        </div>
+        <div class="footer audio-playback">
+          <audio controls style="width: 100%;">
+            <source
+              src="${element.link}"
+              type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    `)
+    });
+    
+  })
+}
+
+function addToPlaylist(e) {
+  e.preventDefault()
+}
+
 function deleteSong(e, playlistid, songid) {
   e.preventDefault()
   Swal.fire({
@@ -462,7 +510,8 @@ function showPlaylistDetail(id) {
   $("#page-playlist").hide();
   $("#page-detail-playlist").show();
   let access_token = localStorage.getItem("access_token");
-
+  // let playlistId = localStorage.setItem("playlistId", id)
+  currentPlaylistId = id
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist/${id}/song`,

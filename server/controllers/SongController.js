@@ -6,12 +6,14 @@ const { verifyToken } = require("../helper/jwt")
 class SongController {
     static async searchSongs(req, res, next) {
         try {
-            const search = req.body.search
+            const search = req.body.q
+            console.log(search);
             let response = await Axios({
                 url: `https://api.deezer.com/search?q=${search}`,
-                method: 'get',
+                method: 'get'
             })
             let data = [];
+            console.log(response);
             response.data.data.forEach((el) => {
                 data.push({
                     id: el.id,
@@ -24,7 +26,7 @@ class SongController {
             });
             res.status(200).json(data);
         } catch (err) {
-            next(err)
+            next(err);
         }
     }
 
