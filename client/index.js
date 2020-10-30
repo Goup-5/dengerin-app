@@ -1,8 +1,25 @@
 
 const base_url = "http://localhost:3000";
 
+$(document).ready(function () {
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/playlist`,
+    headers: { access_token: localStorage.getItem('access_token') }
+  })
+    .done(response => {
+      afterLogin();
+    })
+    .fail(err => {
+      localStorage.clear();
+      afterSignOut() 
+    })
+});
+
 function showLogin(e) {
-  e.preventDefault()
+  if (e !== null) {
+    e.preventDefault()
+  }
   $("#form-register").hide()
   $("#form-login").show()
 }
@@ -24,7 +41,7 @@ function googleLogin(e) {
 }
 
 function prosesLogin(input, e) {
-  const { username, email, password } = input;
+  const { username, password } = input;
   $.ajax({
     method: "POST",
     url: base_url + "/login",
@@ -72,10 +89,10 @@ function home() {
   $("form-login").hide();
   $("form-register").hide();
   $("#page-home").show();
-  $("#page-home").show();
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
+  $('#song-list').empty();
   showPlaylist()
   pauseAudio()
 }
@@ -91,7 +108,7 @@ function register(e) {
   const username = $("#register-username").val()
   const email = $("#register-email").val()
   const password = $("#register-password").val()
-  const retypePassword = $("#register-retype-password").val()
+  // const retypePassword = $("#register-retype-password").val()
   const input = { username, email, password };
   processRegister(input, e)
 }
@@ -154,8 +171,7 @@ function onSignIn(googleUser) {
       google_access_token
     }
   })
-    .done(response => {
-      console.log(response.access_token)
+    .done(response => { 
       afterLogin()
       saveToken(response.access_token)
     })
@@ -197,13 +213,14 @@ function logout() {
     });
 }
 
-function afterSignOut(e) {
-  e.preventDefault()
+function afterSignOut(e) { 
+  if (e !== null) {
+    e.preventDefault()
+  } 
   $("#page-auth").show();
   $("form-login").show();
   $("#navbar-right").hide();
   $("form-register").hide();
-  $("#page-home").hide();
   $("#page-home").hide();
   $("#page-playlist").hide();
   $("#page-detail-playlist").hide();
@@ -227,7 +244,15 @@ function addPlaylist(e) {
     }
   })
     .done(response => {
-      console.log(response);
+
+      Swal.fire({
+        title: 'Add playlist succesfully!',
+        text: '',
+        icon: 'success',
+        onClose: () => { 
+
+        }
+      }) 
       $("#tabel-playlist").append(`
       <tr>
         <td>${response.id}</td>
@@ -243,8 +268,15 @@ function addPlaylist(e) {
       </tr>
       `)
     })
-    .fail(err => {
-      console.log(err);
+    .fail(err => { 
+      let message = '';
+      if (Array.isArray(err.responseJSON)) {
+        message = err.responseJSON[0].message;
+      } else {
+        message = err.responseJSON.message;
+      }
+      Swal.fire('Failed add playlist!', message, 'error')
+      // console.log(err);
     })
 }
 
@@ -287,7 +319,7 @@ function deletePlaylist(e, id) {
         'success'
       )
     }
-  }) 
+  })
 }
 
 function deleteSong(e, playlistid, songid) {
@@ -337,7 +369,7 @@ function showPlaylist() {
       response.forEach((el, i) => {
         $("#tabel-playlist").append(`
                           <tr>
-                            <td>${i}</td>
+                            <td>${i + 1}</td>
                             <td>${el.playlist_name} <span class="badge badge-primary ml-3">${el.Songs.length} songs</span></td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
@@ -368,7 +400,7 @@ function showPlaylistDetail(id) {
     .done(response => {
       console.log(response)
       $(".song-list").empty();
-      response.Songs.forEach((el, i) => { 
+      response.Songs.forEach((el, i) => {
         const list =
 /* html */ `<tr>
           <td>${i + 1}</td>
@@ -389,27 +421,6 @@ function showPlaylistDetail(id) {
         // var a = $('#mydiv').data('myval'); //getter 
         // $(`#${el.id}`).data('datac', el.link);
       })
-      /**
-       * `
-        <tr>
-          <td>${i}</td>
-          <td>
-            <audio id="audio" controls="controls" style="width: 100%;">
-                          <source id="audioSource" src="${el.link}">
-                          </source>
-                          Your browser does not support the audio format.
-                        </audio>
-
-          </td>
-          <td>${el.title} <span class="badge badge-primary ml-3">${el.duration}</span></td>
-          <td>${el.artist}</td>
-          <td class="float-right">
-            <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
-                class="zmdi zmdi-delete"></i></button>
-          </td>
-        </tr>
-      `
-       */
 
     })
     .fail(err => console.log(err))
@@ -454,7 +465,7 @@ function pauseAudio() {
 
 function playAudio(e, id) {
   e.preventDefault();
-  var d = $(`#${id}`).data('datac');  
+  var d = $(`#${id}`).data('datac');
   console.log('datac', d)
   console.log('id', id)
   var audio = document.getElementById('audio');
@@ -464,19 +475,17 @@ function playAudio(e, id) {
   audio.play(); //call this to play the song right away 
 }
 
+// $('.play-audio').click(function () {
+//   var d = $(this).data('datac');
+//   console.log('datac', d)
+//   alert(d)
+//   var audio = document.getElementById('audio');
+//   var source = document.getElementById('audioSource');
+//   source.src = d;
+//   audio.load(); //call this to just preload the audio without playing
+//   audio.play(); //call this to play the song right away
 
-
-$('.play-audio').click(function () {
-  var d = $(this).data('datac');
-  console.log('datac', d)
-  alert(d)
-  var audio = document.getElementById('audio');
-  var source = document.getElementById('audioSource');
-  source.src = d;
-  audio.load(); //call this to just preload the audio without playing
-  audio.play(); //call this to play the song right away
-
-});
+// });
 
 
 $(function () {
@@ -486,13 +495,3 @@ $(function () {
     });
   });
 });
-
-
-// $(function () {
-//   $("audio").on("play", function () {
-//     $("audio").not(this).each(function (index, audio) {
-//       audio.pause();
-//     });
-//   });
-// });
-// Playlist
