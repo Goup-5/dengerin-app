@@ -49,9 +49,10 @@
 
 
   <main role="main" class="container">
-    
+
     <!-- Right Icon menu Sidebar -->
     <div class="navbar-right" id="navbar-right" style="display: none;">
+      
       <ul class="navbar-nav">
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
@@ -81,7 +82,7 @@
                 <li>
                   <a href="javascript:void(0);">
                     <div class="icon-circle mb-2 bg-purple"><i class="zmdi zmdi-account-o"></i></div>
-                    <p class="mb-0">Profile</p>
+                    <p class="mb-0" id="username-profile">Profile</p>
                   </a>
                 </li>
               </ul>
@@ -93,8 +94,8 @@
         <li><a onclick="signOut(event)" href="javascript:void(0);" class="mega-menu" title="Sign Out"><i
               class="zmdi zmdi-power"></i></a></li>
       </ul>
+      
     </div>
-
     <!-- Right Sidebar -->
     <aside id="rightsidebar" class="right-sidebar">
       <ul class="nav nav-tabs sm">
@@ -148,13 +149,19 @@
 
     <!-- Content -->
     <section class="content" id="page-home" style="display: none;">
-      <div class="body_scroll">
+
+      <!-- MARQUE TEXT -->
+    <marquee width="100%" direction="left" height="20px">
+      <p id='jokes'></p>
+      </marquee>
+      <div class="body">
         <div class="block-header">
           <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
               <h2>Playlist</h2>
               <ul class="breadcrumb">
-                <li class="breadcrumb-item" onclick="home(event)"><a href="javascript:void()"><i class="zmdi zmdi-home"></i> Home</a>
+                <li class="breadcrumb-item" onclick="home(event)"><a href="javascript:void()"><i
+                      class="zmdi zmdi-home"></i> Home</a>
                 </li>
                 <li class="breadcrumb-item active">Playlist</li>
               </ul>
@@ -179,13 +186,15 @@
                   <div id="page-playlist" style="display: none;" onload="showPlaylist(event)">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
-                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+
+                      <button class="btn btn-primary btn-sm" onclick="showChart(event)">Charts Billboard</button>
+                      <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                         <ul class="dropdown-menu dropdown-menu-right slideUp">
                           <li><a href="javascript:void(0);">Edit Playlist</a></li>
                           <li><a href="javascript:void(0);">Delete Playslist</a></li>
                         </ul>
-                      </li>
+                      </li> -->
                       <!-- <li class="remove">
                       <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
                     </li> -->
@@ -195,7 +204,8 @@
                       <!-- Form Submit Playlist -->
                       <form onsubmit="addPlaylist(event)">
                         <div class="input-group mb-4">
-                          <input id="playlistname" type="text" class="form-control" placeholder="Type your playlist here...">
+                          <input id="playlistname" type="text" class="form-control"
+                            placeholder="Type your playlist here...">
                           <div class="input-group-append">
                             <button type="submit" class="btn btn-outline-secondary btn-primaryS" type="button"
                               id="button-addon2">Add Playlist</button>
@@ -239,15 +249,19 @@
                   <!-- TODO: detailPlaylist -->
                   <!-- Page Add Playlist -->
                   <div id="page-detail-playlist" style="display: none;">
-                    <h2><strong>Playlist</strong> Name</h2>
+                    <h2><strong>Playlist</strong> <span id="playlist-name"></span></h2>
+
                     <ul class="header-dropdown">
-                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                      <button class="btn btn-primary btn-sm" onclick="addSong(event)">Add Song to Playlist</button>
+
+                      <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                        <ul class="dropdown-menu dropdown-menu-right slideUp">
+                        
+                          <ul class="dropdown-menu dropdown-menu-right slideUp">
                           <li onclick="addSong(event)"><a href="#">Add Song</a></li>
-                          <li onclick="deletePlaylist(event)"><a href="#">Delete Playslist</a></li>
                         </ul>
-                      </li>
+                      </li> -->
+
                       <!-- <li class="remove">
                       <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
                     </li> -->
@@ -279,7 +293,7 @@
                             </th>
                           </tr>
                         </thead> -->
-                        <tbody id="list" class="song-list">
+                        <tbody id="playlist-song-list" class="song-list">
                           <!-- <tr>
                             <td>01</td>
                             <td>
@@ -335,7 +349,8 @@
                         <div class="input-group mb-4">
                           <input id="searchname" type="text" class="form-control" placeholder="Search Song...">
                           <div class="input-group-append">
-                            <button type="submit" class="btn btn-outline-secondary btn-primaryS" type="button">Search</button>
+                            <button type="submit" class="btn btn-outline-secondary btn-primaryS"
+                              type="button">Search</button>
                           </div>
                         </div>
                       </form>
@@ -364,12 +379,55 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- TODO Chart Song -->
+                  <!-- Page Chart Song -->
+                  <div id="page-chart" style="display: none;">
+                    <h2><strong>Charts</strong> Billboard</h2>
+                    <ul class="header-dropdown">
+                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                          role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                      </li>
+                    </ul>
+                    <br>
+
+                    <div class="table-chart" style="display: node;">
+                      <div class="row clearfix">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="card project_list">
+                            <div class="table-responsive">
+                              <table class="table table-hover c_table theme-color">
+                                <thead>
+                                  <tr>
+                                    <th style="width:50px;">#Rank</th>
+                                    <th>Album</th>
+                                    <th class="hidden-md-down">Artist</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="list-chart-album">
+                                  <tr>
+                                    <td>
+                                      1
+                                    </td>
+                                    <td>
+                                      Album New
+                                    </td>
+                                    <td>
+                                      <strong>Artist</strong>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
     </section>
 

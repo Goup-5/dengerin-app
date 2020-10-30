@@ -8,7 +8,7 @@
   },
   "test": {
     "username": "postgres",
-    "password": "root",
+    "password": "postgres",
     "database": "db_playlist",
     "host": "127.0.0.1",
     "dialect": "postgres"
