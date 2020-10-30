@@ -58,6 +58,7 @@ class PLayListController {
   static async deletePlaylistId (req, res, next) {
     try {
       let playlistId = req.params.id;
+      let playlistSong = await PlaylistSong.destroy({where:{PlaylistId: playlistId}});
       let playlist = await Playlist.destroy({where:{id: playlistId}});
       res.status(200).json({message: `Playlist ${playlistId} deleted`})
     } catch (error) {
