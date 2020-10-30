@@ -105,6 +105,7 @@ function home() {
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
   $('#song-list').empty();
+  $("#page-chart").hide();
   showPlaylist()
   pauseAudio()
   showJokes()
@@ -241,6 +242,7 @@ function afterSignOut(e) {
   $("#tabel-playlist").empty();
   $("#searchlist").empty()
   $("playlist-song-list").empty();
+  $("#page-chart").hide();
   pauseAudio();
   showLogin(e);
 }
@@ -680,17 +682,11 @@ function playAudio(e, id) {
   audio.play(); //call this to play the song right away 
 }
 
-// $('.play-audio').click(function () {
-//   var d = $(this).data('datac');
-//   console.log('datac', d)
-//   alert(d)
-//   var audio = document.getElementById('audio');
-//   var source = document.getElementById('audioSource');
-//   source.src = d;
-//   audio.load(); //call this to just preload the audio without playing
-//   audio.play(); //call this to play the song right away
-
-// });
+function showChart(e) {
+  e.preventDefault()
+  $("#page-playlist").hide();
+  $("#page-chart").show();
+}
 
 
 $(function () {
