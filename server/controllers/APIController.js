@@ -39,15 +39,19 @@ class APIController {
     }
 
     static async randomJokes(req,res,next){
-        let result = await Axios.get("https://sv443.net/jokeapi/v2/joke/Programming",{
-          params:{
-            blacklistFlags: "religious,political,racist,sexist",
-            type:"twopart"
-          }
-        })
-        res.status(200).json({setup:result.data.setup,delivery:result.data.delivery})
+        try{
+            let result = await Axios.get("https://sv443.net/jokeapi/v2/joke/Programming",{
+                params:{
+                  blacklistFlags: "religious,political,racist,sexist",
+                  type:"twopart"
+                }
+              })
+              res.status(200).json({setup:result.data.setup,delivery:result.data.delivery})
+        }
+        catch (err){
+            next(err)
+        }
     }
-    
 }
   
 module.exports = APIController;
