@@ -52,6 +52,7 @@
     
     <!-- Right Icon menu Sidebar -->
     <div class="navbar-right" id="navbar-right" style="display: none;">
+      
       <ul class="navbar-nav">
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i
@@ -93,8 +94,8 @@
         <li><a onclick="signOut(event)" href="javascript:void(0);" class="mega-menu" title="Sign Out"><i
               class="zmdi zmdi-power"></i></a></li>
       </ul>
+      
     </div>
-
     <!-- Right Sidebar -->
     <aside id="rightsidebar" class="right-sidebar">
       <ul class="nav nav-tabs sm">
@@ -148,7 +149,12 @@
 
     <!-- Content -->
     <section class="content" id="page-home" style="display: none;">
-      <div class="body_scroll">
+
+      <!-- MARQUE TEXT -->
+    <marquee width="100%" direction="left" height="20px">
+      <p id='jokes'></p>
+      </marquee>
+      <div class="body">
         <div class="block-header">
           <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
@@ -179,6 +185,8 @@
                   <div id="page-playlist" style="display: none;" onload="showPlaylist(event)">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
+                      <button class="btn btn-primary btn-sm" onclick="alert('Clicked Chart Song')">Chart Songs</button>
+
                       <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                         <ul class="dropdown-menu dropdown-menu-right slideUp">
