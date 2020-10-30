@@ -646,6 +646,7 @@ function showJokes(){
   })
   .done(response=>{
     console.log(response)
+    //$("#jokes").append(`<p>${response.setup} ${response.delivery}</p>`)
   })
   .fail(err=>{
     console.log(err)
