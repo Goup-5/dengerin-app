@@ -4,6 +4,11 @@ const base_url = "http://localhost:3000";
 
 let currentPlaylistId
 $(document).ready(function () { //http://localhost:3000/user
+
+  setInterval(function () {
+    showJokes();
+  }, 10000);
+
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist`,
@@ -28,7 +33,7 @@ $(document).ready(function () { //http://localhost:3000/user
 });
 
 function showLogin(e) {
-  if (e !== null) {
+  if (e) {
     e.preventDefault()
   }
   $("#form-register").hide()
@@ -47,10 +52,10 @@ function login(e) {
   prosesLogin(input, e)
 }
 
-function googleLogin(e) {
-  e.preventDefault()
-  afterLogin()
-}
+// function googleLogin(e) {
+//   e.preventDefault()
+//   afterLogin()
+// }
 
 function prosesLogin(input, e) {
   const { username, password } = input;
@@ -106,8 +111,8 @@ function home() {
   $("#page-search-song").hide();
   $('#song-list').empty();
   $("#page-chart").hide();
-  showPlaylist()
   pauseAudio()
+  showPlaylist()
   showJokes()
 }
 
@@ -187,6 +192,7 @@ function onSignIn(googleUser) {
   })
     .done(response => {
       afterLogin()
+      showPlaylist()
       saveToken(response.access_token)
     })
     .fail(err => {
@@ -675,6 +681,7 @@ $(function () {
   });
 });
 
+
 function showJokes() {
   let access_token = localStorage.getItem("access_token");
   $.ajax({
@@ -684,6 +691,7 @@ function showJokes() {
   })
     .done(response => {
       console.log(response)
+      $("#jokes").empty()
       $("#jokes").append(`<p>${response.setup}, - ${response.delivery}</p>`)
     })
     .fail(err => {
