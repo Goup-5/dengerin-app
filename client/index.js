@@ -23,7 +23,7 @@ $(document).ready(function () { //http://localhost:3000/user
     headers: { access_token: localStorage.getItem('access_token') }
   })
     .done(response => {
-      $('#username-profile').text(response.username)
+      $('#username-profile').html(`<small>${response.username}</small>`)
     })
 });
 
@@ -228,7 +228,7 @@ function logout() {
 }
 
 function afterSignOut(e) {
-  if (e !== null) {
+  if (e) {
     e.preventDefault()
   }
   $("#page-auth").show();
@@ -707,7 +707,7 @@ function showJokes() {
   })
   .done(response=>{
     console.log(response)
-    $("#jokes").append(`<p>${response.setup} ${response.delivery}</p>`)
+    $("#jokes").append(`<p>${response.setup}, - ${response.delivery}</p>`)
   })
   .fail(err=>{
     console.log(err)
