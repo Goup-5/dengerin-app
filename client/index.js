@@ -686,6 +686,7 @@ function showChart(e) {
   e.preventDefault()
   $("#page-playlist").hide();
   $("#page-chart").show();
+  showBillboard()
 }
 
 
@@ -712,6 +713,39 @@ function showJokes() {
     console.log(err)
   })
 }
+
+function showBillboard() {
+  const date = '2019-05-11'
+  const range = '1-10'
+  let access_token = localStorage.getItem("access_token");
+  $.ajax({
+    crossDomain: true,
+    method: "GET",
+    url: `${base_url}/billboard`,
+    headers: { 
+      access_token: access_token,
+      date: date,
+      range: range
+    }
+  })
+  .done(response=>{
+    console.log(response)
+    for (const key in response) {
+      const list = `
+      <tr>
+        <td>${key}</td>
+        <td>${response[key].album} <span class="badge badge-primary ml-3">${response[key].artist}</span></td>
+      </tr>
+      `
+      $("#list-chart-album").append(list);
+    }
+
+  })
+  .fail(err=>{
+    console.log(err)
+  })
+}
+
 
 
 // $(function () {
