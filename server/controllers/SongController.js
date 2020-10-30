@@ -18,7 +18,7 @@ class SongController {
                     duration: timeFormat(el.duration),
                     artist: el.artist.name,
                     link: el.preview,
-                    artist_link: el.artist.link
+                    artist_link: el.artist.picture
                 })
             });
             res.status(200).json(data);
@@ -52,7 +52,7 @@ class SongController {
                         duration: el.duration,
                         artist: el.artist.name,
                         link: el.preview,
-                        artist_link: el.artist.link
+                        artist_link: el.artist.picture
                     })
                 }
             });
