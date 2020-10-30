@@ -24,6 +24,7 @@ function showLogin(e) {
   }
   $("#form-register").hide()
   $("#form-login").show()
+  $("#page-playlist").hide();
 }
 
 function login(e) {
@@ -260,7 +261,7 @@ function addPlaylist(e) {
       $("#tabel-playlist").append(`
       <tr>
         <td>${response.id}</td>
-        <td>${response.playlist_name}<span class="badge badge-primary ml-3">99 songs</span></td>
+        <td>${response.playlist_name}<span class="badge badge-primary ml-3">0 songs</span></td>
         <td class="float-right">
           <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
               class="zmdi zmdi-edit"></i></button>
@@ -402,7 +403,7 @@ function searchSong(e) {
           <div class="details">
             <h6 class="mb-0 mt-2">${element.artist}</h6>
             <p class="mb-0"><small>${element.title}</small></p>
-            <button class="btn btn-primary" onclick="addToPlaylist(event)" >Add to Playlist</button>
+            <button class="btn btn-primary" onclick="addToPlaylist(event, ${element.id})" >Add to Playlist</button>
           </div>
         </div>
         <div class="footer audio-playback">
@@ -419,8 +420,26 @@ function searchSong(e) {
   })
 }
 
-function addToPlaylist(e) {
+function addToPlaylist(e, id) {
   e.preventDefault()
+  $("#page-playlist").hide();
+  $("#page-detail-playlist").hide();
+  $("#page-search-song").show();
+  const search_name = $("#searchname").val()
+  $.ajax({
+    method: "POST",
+    url: base_url + `/playlist/${currentPlaylistId}/song/${search_name}/${id}`,
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+  .done(response => {
+    showPlaylistDetail(currentPlaylistId);
+    $("#page-search-song").hide();
+
+  })
+  .fail(err => {console.log(err)})
+
 }
 
 function deleteSong(e, playlistid, songid) {
@@ -488,6 +507,24 @@ function showPlaylist() {
     .fail(err => console.log(err))
 }
 
+function timeFormat(duration) {   
+    // Hours, minutes and seconds
+    var hrs = ~~(duration / 3600);
+    var mins = ~~((duration % 3600) / 60);
+    var secs = ~~duration % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+
+    if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+}
+
 function showPlaylistDetail(id) {
   $("#page-playlist").hide();
   $("#page-detail-playlist").show();
@@ -506,12 +543,13 @@ function showPlaylistDetail(id) {
         const list =
 /* html */ `<tr>
           <td>${i + 1}</td>
+            <td><img src="${el.artist_link}" alt="profile-image"></td>
             <td>
               <a id="${el.id}" onclick="playAudio(event, ${el.id})" class="play-audio" href="#"
                 data-datac="${el.link}"><button
                   class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
             </td>
-            <td>${el.title}<span class="badge badge-primary ml-3">${el.duration}</span></td>
+            <td>${el.title}<span class="badge badge-primary ml-3">${timeFormat(el.duration)}</span></td>
             <td>${el.artist}</td>
             <td class="float-right">
               <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
@@ -535,11 +573,6 @@ function addSong(e) {
   $("#page-search-song").show();
 }
 
-function searchSong(e) {
-  e.preventDefault()
-  alert('clicked')
-
-}
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 

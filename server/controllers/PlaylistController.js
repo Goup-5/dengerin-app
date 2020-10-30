@@ -9,7 +9,9 @@ class PLayListController {
 
   static async readPlaylist (req, res, next){
     try {
-      let playlistSongs = await Playlist.findAll({include:[Song], order: [['id', 'DESC']]});
+      let access_token = req.headers.access_token;
+      const decoded = verifyToken(access_token);
+      let playlistSongs = await Playlist.findAll({include:[Song], order: [['id', 'DESC']], where:{UserId: decoded.id}});
       res.status(200).json(playlistSongs);
     } catch (err) {
       next(err);

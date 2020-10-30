@@ -1,6 +1,7 @@
 const { default: Axios } = require('axios')
 const { PlaylistSong, Song, Playlist } = require('../models/index')
 const timeFormat = require('../helper/secToMinutes')
+const { verifyToken } = require("../helper/jwt")
 
 class SongController {
     static async searchSongs(req, res, next) {
@@ -31,7 +32,10 @@ class SongController {
 
     static async getSongs(req, res, next){
         try {
+            // let access_token = req.headers.access_token;
+            // const decoded = verifyToken(access_token)
             let data = await Playlist.findOne({where:{id:req.params.id}, include:[Song]})
+            // console.log(decoded, "<<< decoded");
             res.status(200).json(data);
         } catch (error){
             next(error);
