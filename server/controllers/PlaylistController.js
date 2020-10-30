@@ -9,7 +9,7 @@ class PLayListController {
 
   static async readPlaylist (req, res, next){
     try {
-      let playlistSongs = await Playlist.findAll({include:[Song]});
+      let playlistSongs = await Playlist.findAll({include:[Song], order: [['id', 'DESC']]});
       res.status(200).json(playlistSongs);
     } catch (err) {
       next(err);
