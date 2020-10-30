@@ -16,6 +16,8 @@ router.post('/register', LandingController.register)
 router.post('/login', LandingController.login)
 
 router.use(authentication)
+//User
+router.get('/user', UserController.getUser);
 
 //Router Playlist ================================================================
 router.get('/playlist', PLayListController.readPlaylist)
