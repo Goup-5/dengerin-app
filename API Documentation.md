@@ -652,6 +652,207 @@
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ error : "Not Authorized" }`
 
+<hr>
+
+  Get User Profile
+
+* **URL**
+
+  /user
+
+* **Method:**
+  
+  `GET`
+
+
+* **Headers Params**
+
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:**
+    OBJECT
+    EXAMPLE :
+    ```
+    {
+      "username": "ramaadmin"
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Invalid Token" }`
+
+<hr>
+
+  Get Billboard Data
+
+* **URL**
+
+  /billboard
+
+* **Method:**
+  
+  `GET`
+
+
+* **Headers Params**
+
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:**
+    OBJECT
+    EXAMPLE :
+    ```
+    {
+      {
+      "1": {
+          "rank": "1",
+          "album": "Hurts 2B Human",
+          "artist": "P!nk",
+          "detail": "new"
+      },
+      "2": {
+          "rank": "2",
+          "album": "People",
+          "artist": "Hillsong UNITED",
+          "detail": "new"
+      },
+      "3": {
+          "rank": "3",
+          "album": "CrasH Talk",
+          "artist": "ScHoolboy Q",
+          "detail": "new"
+      },
+      "4": {
+          "rank": "4",
+          "album": "When We All Fall Asleep, Where Do We Go?",
+          "artist": "Billie Eilish",
+          "last week": "1",
+          "peak position": "1",
+          "weeks on chart": "5",
+          "detail": "down"
+      },
+      "5": {
+          "rank": "5",
+          "album": "Free Spirit",
+          "artist": "Khalid",
+          "last week": "2",
+          "peak position": "1",
+          "weeks on chart": "4",
+          "detail": "down"
+      },
+      "6": {
+          "rank": "6",
+          "album": "Thank U, Next",
+          "artist": "Ariana Grande",
+          "last week": "5",
+          "peak position": "1",
+          "weeks on chart": "12",
+          "detail": "down"
+      },
+      "7": {
+          "rank": "7",
+          "album": "Map Of The Soul: PERSONA",
+          "artist": "BTS",
+          "last week": "3",
+          "peak position": "1",
+          "weeks on chart": "3",
+          "detail": "down"
+      },
+      "8": {
+          "rank": "8",
+          "album": "Neotheater",
+          "artist": "AJR",
+          "detail": "new"
+      },
+      "9": {
+          "rank": "9",
+          "album": "HOMECOMING: THE LIVE ALBUM",
+          "artist": "Beyonce",
+          "last week": "4",
+          "peak position": "4",
+          "weeks on chart": "3",
+          "detail": "down"
+      },
+      "10": {
+          "rank": "10",
+          "album": "Victory Lap",
+          "artist": "Nipsey Hussle",
+          "last week": "7",
+          "peak position": "2",
+          "weeks on chart": "15",
+          "detail": "down"
+        }
+      }
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Invalid Token" }`
+
+<hr>
+
+  Get Randomjokes API Data
+
+* **URL**
+
+  /randomjokes
+
+* **Method:**
+  
+  `GET`
+
+
+* **Headers Params**
+
+  ```
+        {
+            "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyYW1hMTIzNDUiLCJpYXQiOjE2MDQwMjkyMDZ9.        
+            p8G8p1cMURN5-U1YpRNbTAxdWTG071tTC_DxZf0ceZQ",
+        }
+  ```
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:**
+    OBJECT
+    EXAMPLE :
+    ```
+    {
+      "setup": "Why did the functional programming developer get thrown out of school?",
+      "delivery": "Because he refused to take classes."
+    }
+    
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Invalid Token" }`
+
 
 
 
