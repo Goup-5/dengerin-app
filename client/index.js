@@ -257,7 +257,7 @@ function addPlaylist(e) {
       $("#tabel-playlist").append(`
       <tr>
         <td>${response.id}</td>
-        <td>${response.playlist_name}<span class="badge badge-primary ml-3">99 songs</span></td>
+        <td>${response.playlist_name}<span class="badge badge-primary ml-3">0 songs</span></td>
         <td class="float-right">
           <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
               class="zmdi zmdi-edit"></i></button>
