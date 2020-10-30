@@ -392,6 +392,7 @@ function searchSong(e) {
     }
   })
   .done(response => {
+    $("#searchlist").empty();
     response.forEach(element => {
       $("#searchlist").append(`
     <div class="col-lg-4 col-md-12">
