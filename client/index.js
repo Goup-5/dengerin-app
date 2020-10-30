@@ -624,7 +624,7 @@ function showPlaylistDetail(id, playlistName = '') {
             </td>
           </tr>`
 
-        $("playlist-song-list").append(list)
+        $("#playlist-song-list").append(list)
         // var a = $('#mydiv').data('myval'); //getter 
         // $(`#${el.id}`).data('datac', el.link);
       })
