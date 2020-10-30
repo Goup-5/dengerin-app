@@ -640,29 +640,6 @@ function addSong(e) {
   $("#page-search-song").show();
 }
 
-function sweetAlert() {
-  const ipAPI = '//api.ipify.org?format=json'
-
-  Swal.queue([{
-    title: 'Your public IP',
-    confirmButtonText: 'Show my public IP',
-    text:
-      'Your public IP will be received ' +
-      'via AJAX request',
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      return fetch(ipAPI)
-        .then(response => response.json())
-        .then(data => Swal.insertQueueStep(data.ip))
-        .catch(() => {
-          Swal.insertQueueStep({
-            icon: 'error',
-            title: 'Unable to get your public IP'
-          })
-        })
-    }
-  }])
-}
 
 function pauseAudio() {
   $("audio").not(this).each(function (index, audio) {
@@ -705,45 +682,100 @@ function showJokes() {
     url: `${base_url}/randomJokes`,
     headers: { access_token }
   })
-  .done(response=>{
-    console.log(response)
-    $("#jokes").append(`<p>${response.setup}, - ${response.delivery}</p>`)
-  })
-  .fail(err=>{
-    console.log(err)
-  })
+    .done(response => {
+      console.log(response)
+      $("#jokes").append(`<p>${response.setup}, - ${response.delivery}</p>`)
+    })
+    .fail(err => {
+      console.log(err)
+      function sweetAlert() {
+        const ipAPI = '//api.ipify.org?format=json'
+
+        Swal.queue([{
+          title: 'Your public IP',
+          confirmButtonText: 'Show my public IP',
+          text:
+            'Your public IP will be received ' +
+            'via AJAX request',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+            return fetch(ipAPI)
+              .then(response => response.json())
+              .then(data => Swal.insertQueueStep(data.ip))
+              .catch(() => {
+                Swal.insertQueueStep({
+                  icon: 'error',
+                  title: 'Unable to get your public IP'
+                })
+              })
+          }
+        }])
+      }
+    })
 }
 
 function showBillboard() {
   const date = '2019-05-11'
   const range = '1-10'
   let access_token = localStorage.getItem("access_token");
+
+  Swal.fire({
+    title: 'Please wait!',
+    text: '',
+    imageUrl: 'public/images/ajax-progres.gif',
+    imageWidth: 50,
+    imageHeight: 50,
+    imageAlt: 'Custom image',
+    showConfirmButton: false,
+    allowOutsideClick: false
+  })
   $.ajax({
     crossDomain: true,
     method: "GET",
     url: `${base_url}/billboard`,
-    headers: { 
+    headers: {
       access_token: access_token,
       date: date,
       range: range
     }
   })
-  .done(response=>{
-    console.log(response)
-    for (const key in response) {
-      const list = `
+    .done(response => {
+      console.log(response)
+      $("#list-chart-album").empty()
+      for (const key in response) {
+        const list = `
       <tr>
         <td>${key}</td>
         <td>${response[key].album} <span class="badge badge-primary ml-3">${response[key].artist}</span></td>
       </tr>
       `
-      $("#list-chart-album").append(list);
-    }
+        $("#list-chart-album").append(list);
+      }
+      Swal.fire({
+        title: 'Complete!',
+        timer: 100,
+        timerProgressBar: true,
+        willOpen: () => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        onClose: () => {
+          clearInterval(timerInterval)
+        }
+      })
 
-  })
-  .fail(err=>{
-    console.log(err)
-  })
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
 
