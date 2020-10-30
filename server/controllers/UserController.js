@@ -5,7 +5,7 @@ class UserController {
     res.status(200).json({ connectionStatus: "OK" })
   }
 
-  static register(req, res, next){
+  static register(req, res, next) {
     const payload = {
       username: req.body.username,
       email: req.body.email,
@@ -18,6 +18,11 @@ class UserController {
         email: data.email
       }))
       .catch(err => next(err))
+  }
+
+  static getUser(req, res, next) {
+    const username = req.loggedIn.username;
+    res.status(200).json({ username })
   }
 
 }
