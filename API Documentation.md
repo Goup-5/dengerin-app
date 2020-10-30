@@ -95,6 +95,32 @@
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ error : "Validation Error" }`
 
+Google Login
+* **URL**
+
+  /googleLogin
+
+* **Method:**
+  
+  `POST`
+
+* **Success Response:**
+  
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```
+    {
+        "access_token": "ya29.A0AfH6SMDbbzW7kzEftTLe4-yZ4FSKKxjST9wY_KMb8mLjSB9WzaO86KUptxEu1xxWPZ_rp869V-rKqWQymXUL1Lh353gcqwrKhqCnOtwchvjXaqsZMUvf4L7X080ZAxHzKAqxmtgtcTnj1jjFZZoe1awFhhLi3nFs6Biv7_1ZYkTc"
+    }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 500 Internal Server Error <br />
+    **Content:** `{ error : "Internal Server Error" }`
+
+
 <hr>
 
   Show Playlist
