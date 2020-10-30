@@ -3,7 +3,7 @@ const base_url = "http://localhost:3000";
 
 
 let currentPlaylistId
-$(document).ready(function () {
+$(document).ready(function () { //http://localhost:3000/user
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist`,
@@ -15,6 +15,15 @@ $(document).ready(function () {
     .fail(err => {
       localStorage.clear();
       afterSignOut()
+    });
+
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/user`,
+    headers: { access_token: localStorage.getItem('access_token') }
+  })
+    .done(response => {
+      $('#username-profile').text(response.username)
     })
 });
 
@@ -229,6 +238,9 @@ function afterSignOut(e) {
   $("#page-playlist").hide();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
+  $("#tabel-playlist").empty();
+  $("#searchlist").empty()
+  $("playlist-song-list").empty();
   pauseAudio();
   showLogin(e);
 }
@@ -258,20 +270,7 @@ function addPlaylist(e) {
 
         }
       })
-      $("#tabel-playlist").append(`
-      <tr>
-        <td>${response.id}</td>
-        <td>${response.playlist_name}<span class="badge badge-primary ml-3">0 songs</span></td>
-        <td class="float-right">
-          <button class="btn btn-default btn-sm" onclick="editPlaylist(event, ${response.id})"><i
-              class="zmdi zmdi-edit"></i></button>
-          <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${response.id})"><i
-              class="zmdi zmdi-delete"></i></button>
-          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${response.id}, '${response.playlist_name}')"><i
-              class="zmdi zmdi-open-in-new"></i></button>
-        </td>
-      </tr>
-      `)
+      showPlaylist();
     })
     .fail(err => {
       let message = '';
@@ -501,7 +500,6 @@ function addToPlaylist(e, id) {
 
     })
     .fail(err => { console.log(err) })
-
 }
 
 function deleteSong(e, playlistid, songid) {
@@ -551,7 +549,7 @@ function showPlaylist() {
       response.forEach((el, i) => {
         $("#tabel-playlist").append(`
                           <tr>
-                            <td>${i + 1}</td>
+                            <td>${++i}</td>
                             <td>${el.playlist_name} <span class="badge badge-primary ml-3">${el.Songs.length} songs</span></td>
                             <td class="float-right">
                               <button class="btn btn-default btn-sm" onclick="editPlaylist(event, ${el.id})"><i
@@ -604,7 +602,7 @@ function showPlaylistDetail(id, playlistName = '') {
   })
     .done(response => {
       console.log(response)
-      $(".song-list").empty();
+      $("playlist-song-list").empty();
       response.Songs.forEach((el, i) => {
         const list =
 /* html */ `<tr>
@@ -623,7 +621,7 @@ function showPlaylistDetail(id, playlistName = '') {
             </td>
           </tr>`
 
-        $(".song-list").append(list)
+        $("playlist-song-list").append(list)
         // var a = $('#mydiv').data('myval'); //getter 
         // $(`#${el.id}`).data('datac', el.link);
       })
