@@ -24,6 +24,7 @@ function showLogin(e) {
   }
   $("#form-register").hide()
   $("#form-login").show()
+  $("#page-playlist").hide();
 }
 
 function login(e) {
@@ -402,7 +403,7 @@ function searchSong(e) {
           <div class="details">
             <h6 class="mb-0 mt-2">${element.artist}</h6>
             <p class="mb-0"><small>${element.title}</small></p>
-            <button class="btn btn-primary" onclick="addToPlaylist(event)" >Add to Playlist</button>
+            <button class="btn btn-primary" onclick="addToPlaylist(event, ${element.id})" >Add to Playlist</button>
           </div>
         </div>
         <div class="footer audio-playback">
@@ -419,8 +420,26 @@ function searchSong(e) {
   })
 }
 
-function addToPlaylist(e) {
+function addToPlaylist(e, id) {
   e.preventDefault()
+  $("#page-playlist").hide();
+  $("#page-detail-playlist").hide();
+  $("#page-search-song").show();
+  const search_name = $("#searchname").val()
+  $.ajax({
+    method: "POST",
+    url: base_url + `/playlist/${currentPlaylistId}/song/${search_name}/${id}`,
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+  .done(response => {
+    showPlaylistDetail(currentPlaylistId);
+    $("#page-search-song").hide();
+
+  })
+  .fail(err => {console.log(err)})
+
 }
 
 function deleteSong(e, playlistid, songid) {
@@ -554,11 +573,6 @@ function addSong(e) {
   $("#page-search-song").show();
 }
 
-function searchSong(e) {
-  e.preventDefault()
-  alert('clicked')
-
-}
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 
