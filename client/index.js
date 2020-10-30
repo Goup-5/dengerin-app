@@ -23,7 +23,7 @@ $(document).ready(function () { //http://localhost:3000/user
     headers: { access_token: localStorage.getItem('access_token') }
   })
     .done(response => {
-      $('#username-profile').text(response.username)
+      $('#username-profile').html(`<small>${response.username}</small>`)
     })
 });
 
