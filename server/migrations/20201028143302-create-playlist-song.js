@@ -15,7 +15,9 @@ module.exports = {
             tableName: "Playlists"
           },
           id: "id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       SongId: {
         type: Sequelize.INTEGER,

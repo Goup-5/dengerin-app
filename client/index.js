@@ -263,11 +263,11 @@ function addPlaylist(e) {
         <td>${response.id}</td>
         <td>${response.playlist_name}<span class="badge badge-primary ml-3">0 songs</span></td>
         <td class="float-right">
-          <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+          <button class="btn btn-default btn-sm" onclick="editPlaylist(event, ${response.id})"><i
               class="zmdi zmdi-edit"></i></button>
           <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${response.id})"><i
               class="zmdi zmdi-delete"></i></button>
-          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${response.id})"><i
+          <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${response.id}, '${response.playlist_name}')"><i
               class="zmdi zmdi-open-in-new"></i></button>
         </td>
       </tr>
@@ -297,8 +297,8 @@ function editPlaylist(e, playlistid) {
     showCancelButton: true,
     confirmButtonText: 'Update',
     showLoaderOnConfirm: true,
-    preConfirm: (playlist_name) => { 
-      console.log(playlist_name, playlistid) 
+    preConfirm: (playlist_name) => {
+      console.log(playlist_name, playlistid)
       $.ajax({
         method: "PUT",
         url: `${base_url}/playlist/${playlistid}`,
@@ -307,11 +307,11 @@ function editPlaylist(e, playlistid) {
           playlist_name: playlist_name
         },
       })
-        .done(response => { 
+        .done(response => {
           message = `Playlist updated to ` + response.playlist_name
-          showPlaylist();  
+          showPlaylist();
           Swal.fire({
-            title: message, 
+            title: message,
             icon: 'success'
           })
         })
@@ -320,11 +320,11 @@ function editPlaylist(e, playlistid) {
             message = err.responseJSON[0].message;
           } else {
             message = err.responseJSON.message;
-          } 
+          }
           Swal.showValidationMessage(
             `Request failed: ${message}`
-          ) 
-        }); 
+          )
+        });
     },
     allowOutsideClick: () => !Swal.isLoading()
   })
@@ -381,6 +381,16 @@ function deletePlaylist(e, playlistid) {
 function searchSong(e) {
   e.preventDefault()
   const search_name = $("#searchname").val()
+  Swal.fire({
+    title: 'Please wait!',
+    text: '',
+    imageUrl: 'public/images/ajax-progres.gif',
+    imageWidth: 50,
+    imageHeight: 50,
+    imageAlt: 'Custom image',
+    showConfirmButton: false,
+    allowOutsideClick: false
+  })
   $.ajax({
     method: "POST",
     url: base_url + `/playlist/${currentPlaylistId}/song`,
@@ -390,8 +400,8 @@ function searchSong(e) {
     headers: {
       access_token: localStorage.getItem("access_token")
     }
-  })
-  .done(response => {
+  }).done(response => {
+    $("#searchlist").empty()
     response.forEach(element => {
       $("#searchlist").append(`
     <div class="col-lg-4 col-md-12">
@@ -416,7 +426,27 @@ function searchSong(e) {
       </div>
     `)
     });
-    
+    let timerInterval
+    Swal.fire({
+      title: 'Complete!',
+      timer: 100,
+      timerProgressBar: true,
+      willOpen: () => {
+        Swal.showLoading()
+        timerInterval = setInterval(() => {
+          const content = Swal.getContent()
+          if (content) {
+            const b = content.querySelector('b')
+            if (b) {
+              b.textContent = Swal.getTimerLeft()
+            }
+          }
+        }, 100)
+      },
+      onClose: () => {
+        clearInterval(timerInterval)
+      }
+    })
   })
 }
 
@@ -426,6 +456,17 @@ function addToPlaylist(e, id) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").show();
   const search_name = $("#searchname").val()
+  Swal.fire({
+    title: 'Please wait!',
+    text: '',
+    imageUrl: 'public/images/ajax-progres.gif',
+    imageWidth: 50,
+    imageHeight: 50,
+    imageAlt: 'Custom image',
+    showConfirmButton: false,
+    allowOutsideClick: false
+  })
+
   $.ajax({
     method: "POST",
     url: base_url + `/playlist/${currentPlaylistId}/song/${search_name}/${id}`,
@@ -433,12 +474,33 @@ function addToPlaylist(e, id) {
       access_token: localStorage.getItem("access_token")
     }
   })
-  .done(response => {
-    showPlaylistDetail(currentPlaylistId);
-    $("#page-search-song").hide();
+    .done(response => {
+      showPlaylistDetail(currentPlaylistId);
+      $("#page-search-song").hide();
+      let timerInterval
+      Swal.fire({
+        title: 'Complete!',
+        timer: 100,
+        timerProgressBar: true,
+        willOpen: () => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        onClose: () => {
+          clearInterval(timerInterval)
+        }
+      })
 
-  })
-  .fail(err => {console.log(err)})
+    })
+    .fail(err => { console.log(err) })
 
 }
 
@@ -496,7 +558,7 @@ function showPlaylist() {
                                   class="zmdi zmdi-edit"></i></button>
                               <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${el.id})"><i
                                   class="zmdi zmdi-delete"></i></button>
-                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${el.id})"><i
+                              <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${el.id}, '${el.playlist_name}')"><i
                                   class="zmdi zmdi-open-in-new"></i></button>
                             </td>
                           </tr>
@@ -507,27 +569,31 @@ function showPlaylist() {
     .fail(err => console.log(err))
 }
 
-function timeFormat(duration) {   
-    // Hours, minutes and seconds
-    var hrs = ~~(duration / 3600);
-    var mins = ~~((duration % 3600) / 60);
-    var secs = ~~duration % 60;
+function timeFormat(duration) {
+  // Hours, minutes and seconds
+  var hrs = ~~(duration / 3600);
+  var mins = ~~((duration % 3600) / 60);
+  var secs = ~~duration % 60;
 
-    // Output like "1:01" or "4:03:59" or "123:03:59"
-    var ret = "";
+  // Output like "1:01" or "4:03:59" or "123:03:59"
+  var ret = "";
 
-    if (hrs > 0) {
-        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-    }
+  if (hrs > 0) {
+    ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+  }
 
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-    ret += "" + secs;
-    return ret;
+  ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+  ret += "" + secs;
+  return ret;
 }
 
-function showPlaylistDetail(id) {
+function showPlaylistDetail(id, playlistName = '') {
   $("#page-playlist").hide();
   $("#page-detail-playlist").show();
+  if (playlistName) {
+    $("#playlist-name").text(playlistName)
+  }
+  pauseAudio();
   let access_token = localStorage.getItem("access_token");
   // let playlistId = localStorage.setItem("playlistId", id)
   currentPlaylistId = id
@@ -551,7 +617,7 @@ function showPlaylistDetail(id) {
             </td>
             <td>${el.title}<span class="badge badge-primary ml-3">${timeFormat(el.duration)}</span></td>
             <td>${el.artist}</td>
-            <td class="float-right">
+            <td>
               <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
                   class="zmdi zmdi-delete"></i></button>
             </td>
@@ -636,19 +702,19 @@ $(function () {
   });
 });
 
-function showJokes(){
+function showJokes() {
   let access_token = localStorage.getItem("access_token");
   $.ajax({
     method: "GET",
     url: `${base_url}/randomJokes`,
     headers: { access_token }
   })
-  .done(response=>{
-    console.log(response)
-  })
-  .fail(err=>{
-    console.log(err)
-  })
+    .done(response => {
+      console.log(response)
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
 

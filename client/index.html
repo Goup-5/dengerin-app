@@ -179,13 +179,13 @@
                   <div id="page-playlist" style="display: none;" onload="showPlaylist(event)">
                     <h2><strong>Your</strong> Playlist</h2>
                     <ul class="header-dropdown">
-                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                      <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                         <ul class="dropdown-menu dropdown-menu-right slideUp">
                           <li><a href="javascript:void(0);">Edit Playlist</a></li>
                           <li><a href="javascript:void(0);">Delete Playslist</a></li>
                         </ul>
-                      </li>
+                      </li> -->
                       <!-- <li class="remove">
                       <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
                     </li> -->
@@ -239,15 +239,19 @@
                   <!-- TODO: detailPlaylist -->
                   <!-- Page Add Playlist -->
                   <div id="page-detail-playlist" style="display: none;">
-                    <h2><strong>Playlist</strong> Name</h2>
+                    <h2><strong>Playlist</strong> <span id="playlist-name"></span></h2>
+                    
                     <ul class="header-dropdown">
-                      <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                      <button class="btn btn-primary btn-sm" onclick="addSong(event)">Add Song to Playlist</button>
+
+                      <!-- <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
                           role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                        <ul class="dropdown-menu dropdown-menu-right slideUp">
+                        
+                          <ul class="dropdown-menu dropdown-menu-right slideUp">
                           <li onclick="addSong(event)"><a href="#">Add Song</a></li>
-                          <li onclick="deletePlaylist(event)"><a href="#">Delete Playslist</a></li>
                         </ul>
-                      </li>
+                      </li> -->
+
                       <!-- <li class="remove">
                       <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
                     </li> -->
