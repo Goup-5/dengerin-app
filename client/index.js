@@ -605,7 +605,7 @@ function showPlaylistDetail(id, playlistName = '') {
   })
     .done(response => {
       console.log(response)
-      $("playlist-song-list").empty();
+      $("#playlist-song-list").empty();
       response.Songs.forEach((el, i) => {
         const list =
 /* html */ `<tr>
