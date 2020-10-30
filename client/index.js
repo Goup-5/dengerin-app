@@ -221,7 +221,7 @@ function editPlaylist(e) {
 
 }
 
-function deletePlaylist(e) {
+function deletePlaylist(e, playlistid) {
   e.preventDefault()
   Swal.fire({
     title: 'Are you sure?',
@@ -233,6 +233,22 @@ function deletePlaylist(e) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
+      $.ajax({
+        method: "DELETE",
+        url: `${base_url}/playlist/${playlistid}`,
+        headers: { access_token },
+      })
+        .done(response => {
+          Swal.fire(
+            'Deleted!',
+            'Your song has been deleted from playlist.',
+            'success'
+          )
+          showPlaylist();
+        })
+        .fail(err => console.log(err));
+
+
       Swal.fire(
         'Deleted!',
         'Your playlist has been deleted.',
@@ -294,7 +310,7 @@ function showPlaylist() {
                             <td class="float-right">
                               <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
                                   class="zmdi zmdi-edit"></i></button>
-                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
+                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${el.id})"><i
                                   class="zmdi zmdi-delete"></i></button>
                               <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${el.id})"><i
                                   class="zmdi zmdi-open-in-new"></i></button>
@@ -320,7 +336,7 @@ function showPlaylistDetail(id) {
     .done(response => {
       console.log(response)
       $(".song-list").empty();
-      response.Songs.forEach((el, i) => { 
+      response.Songs.forEach((el, i) => {
         const list =
 /* html */ `<tr>
           <td>${i + 1}</td>
@@ -341,27 +357,6 @@ function showPlaylistDetail(id) {
         // var a = $('#mydiv').data('myval'); //getter 
         // $(`#${el.id}`).data('datac', el.link);
       })
-      /**
-       * `
-        <tr>
-          <td>${i}</td>
-          <td>
-            <audio id="audio" controls="controls" style="width: 100%;">
-                          <source id="audioSource" src="${el.link}">
-                          </source>
-                          Your browser does not support the audio format.
-                        </audio>
-
-          </td>
-          <td>${el.title} <span class="badge badge-primary ml-3">${el.duration}</span></td>
-          <td>${el.artist}</td>
-          <td class="float-right">
-            <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
-                class="zmdi zmdi-delete"></i></button>
-          </td>
-        </tr>
-      `
-       */
 
     })
     .fail(err => console.log(err))
@@ -406,7 +401,7 @@ function pauseAudio() {
 
 function playAudio(e, id) {
   e.preventDefault();
-  var d = $(`#${id}`).data('datac');  
+  var d = $(`#${id}`).data('datac');
   console.log('datac', d)
   console.log('id', id)
   var audio = document.getElementById('audio');
