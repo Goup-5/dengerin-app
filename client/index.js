@@ -1,10 +1,27 @@
 
 const base_url = "http://localhost:3000";
 
+
 let currentPlaylistId
+$(document).ready(function () {
+  $.ajax({
+    method: "GET",
+    url: `${base_url}/playlist`,
+    headers: { access_token: localStorage.getItem('access_token') }
+  })
+    .done(response => {
+      afterLogin();
+    })
+    .fail(err => {
+      localStorage.clear();
+      afterSignOut()
+    })
+});
 
 function showLogin(e) {
-  e.preventDefault()
+  if (e !== null) {
+    e.preventDefault()
+  }
   $("#form-register").hide()
   $("#form-login").show()
 }
@@ -26,7 +43,7 @@ function googleLogin(e) {
 }
 
 function prosesLogin(input, e) {
-  const { username, email, password } = input;
+  const { username, password } = input;
   $.ajax({
     method: "POST",
     url: base_url + "/login",
@@ -68,16 +85,16 @@ function afterLogin() {
   home()
 }
 
-function home() { 
+function home() {
   $("#navbar-right").show();
   $("#page-auth").hide();
   $("form-login").hide();
   $("form-register").hide();
   $("#page-home").show();
-  $("#page-home").show();
   $("#page-playlist").show();
   $("#page-detail-playlist").hide();
   $("#page-search-song").hide();
+  $('#song-list').empty();
   showPlaylist()
   pauseAudio()
 }
@@ -93,7 +110,7 @@ function register(e) {
   const username = $("#register-username").val()
   const email = $("#register-email").val()
   const password = $("#register-password").val()
-  const retypePassword = $("#register-retype-password").val()
+  // const retypePassword = $("#register-retype-password").val()
   const input = { username, email, password };
   processRegister(input, e)
 }
@@ -156,10 +173,9 @@ function onSignIn(googleUser) {
       google_access_token
     }
   })
-    .done(response => { 
-      console.log(response.access_token)
+    .done(response => {
       afterLogin()
-      saveToken(response.access_token)  
+      saveToken(response.access_token)
     })
     .fail(err => {
       console.log(err)
@@ -183,29 +199,30 @@ function beforeSignOut(e) {
     }
   })
 }
- 
+
 function signOut(e) {
   beforeSignOut(e)
 }
 
 //ceeeek dulu
-function logout() { 
+function logout() {
   localStorage.clear()
   //sign out google
   let auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut()
-  .then(function () {
-    console.log('User signed out.');
-  }); 
+    .then(function () {
+      console.log('User signed out.');
+    });
 }
 
 function afterSignOut(e) {
-  e.preventDefault()
+  if (e !== null) {
+    e.preventDefault()
+  }
   $("#page-auth").show();
   $("form-login").show();
   $("#navbar-right").hide();
   $("form-register").hide();
-  $("#page-home").hide();
   $("#page-home").hide();
   $("#page-playlist").hide();
   $("#page-detail-playlist").hide();
@@ -217,6 +234,7 @@ function afterSignOut(e) {
 function addPlaylist(e) {
   e.preventDefault()
   const playlist_name = $("#playlistname").val()
+  $("#playlistname").val('')
 
   $.ajax({
     method: "POST",
@@ -229,7 +247,15 @@ function addPlaylist(e) {
     }
   })
     .done(response => {
-      console.log(response);
+
+      Swal.fire({
+        title: 'Add playlist succesfully!',
+        text: '',
+        icon: 'success',
+        onClose: () => {
+
+        }
+      })
       $("#tabel-playlist").append(`
       <tr>
         <td>${response.id}</td>
@@ -246,15 +272,72 @@ function addPlaylist(e) {
       `)
     })
     .fail(err => {
-      console.log(err);
+      let message = '';
+      if (Array.isArray(err.responseJSON)) {
+        message = err.responseJSON[0].message;
+      } else {
+        message = err.responseJSON.message;
+      }
+      Swal.fire('Failed add playlist!', message, 'error')
+      // console.log(err);
     })
 }
 
-function editPlaylist(e) {
+function editPlaylist(e, playlistid) {
 
+  let message = '';
+  Swal.fire({
+    title: 'Type new playlist name',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Update',
+    showLoaderOnConfirm: true,
+    preConfirm: (playlist_name) => { 
+      console.log(playlist_name, playlistid) 
+      $.ajax({
+        method: "PUT",
+        url: `${base_url}/playlist/${playlistid}`,
+        headers: { access_token: localStorage.getItem('access_token') },
+        data: {
+          playlist_name: playlist_name
+        },
+      })
+        .done(response => { 
+          message = `Playlist updated to ` + response.playlist_name
+          showPlaylist();  
+          Swal.fire({
+            title: message, 
+            icon: 'success'
+          })
+        })
+        .fail(err => {
+          if (Array.isArray(err.responseJSON)) {
+            message = err.responseJSON[0].message;
+          } else {
+            message = err.responseJSON.message;
+          } 
+          Swal.showValidationMessage(
+            `Request failed: ${message}`
+          ) 
+        }); 
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  })
+  // .then((result) => {
+  //   console.log(result)
+  //   if (result.isConfirmed) {
+  //     console.log(result)
+  //     Swal.fire({
+  //       title: `Update succesfully`, 
+  //     })
+  //   }
+  // })
 }
 
-function deletePlaylist(e, id) {
+function deletePlaylist(e, playlistid) {
   e.preventDefault()
   Swal.fire({
     title: 'Are you sure?',
@@ -266,31 +349,31 @@ function deletePlaylist(e, id) {
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if (result.isConfirmed) {
-      console.log("ini id", id);
+      console.log('confirmed')
       $.ajax({
         method: "DELETE",
-        url: base_url + `/playlist/${id}`,
-        data: {
-          id: id
-        },
-        headers: {
-          access_token: localStorage.getItem("access_token")
-        }
+        url: `${base_url}/playlist/${playlistid}`,
+        headers: { access_token: localStorage.getItem('access_token') },
       })
         .done(response => {
-          console.log(response);
+          Swal.fire(
+            'Deleted!',
+            response.message,
+            'success'
+          )
+          showPlaylist();
         })
         .fail(err => {
-          console.log(err);
-        })
-      Swal.fire(
-        'Deleted!',
-        'Your playlist has been deleted.',
-        'success'
-      )
+          let message = '';
+          if (Array.isArray(err.responseJSON)) {
+            message = err.responseJSON[0].message;
+          } else {
+            message = err.responseJSON.message;
+          }
+          Swal.fire('Failed delete playlist!', message, 'error')
+        });
     }
   })
-  
 }
 
 function searchSong(e) {
@@ -355,13 +438,13 @@ function deleteSong(e, playlistid, songid) {
       $.ajax({
         method: "DELETE",
         url: `${base_url}/playlist/${playlistid}/song/${songid}`,
-        headers: {access_token},
+        headers: { access_token },
       })
-      .done(response => {
-        console.log(response);
-        showPlaylistDetail(playlistid)
-      })
-      .fail(err => console.log(err));
+        .done(response => {
+          console.log(response);
+          showPlaylistDetail(playlistid)
+        })
+        .fail(err => console.log(err));
       Swal.fire(
         'Deleted!',
         'Your song has been deleted from playlist.',
@@ -378,30 +461,30 @@ function showPlaylist() {
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist`,
-    headers: {access_token}
+    headers: { access_token }
   })
-  .done(response => {
-    console.log(response)
-    $("#tabel-playlist").empty();
-    response.forEach((el, i) => {
-      $("#tabel-playlist").append(`
+    .done(response => {
+      console.log(response)
+      $("#tabel-playlist").empty();
+      response.forEach((el, i) => {
+        $("#tabel-playlist").append(`
                           <tr>
-                            <td>${i}</td>
+                            <td>${i + 1}</td>
                             <td>${el.playlist_name} <span class="badge badge-primary ml-3">${el.Songs.length} songs</span></td>
                             <td class="float-right">
-                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event)"><i
+                              <button class="btn btn-default btn-sm" onclick="editPlaylist(event, ${el.id})"><i
                                   class="zmdi zmdi-edit"></i></button>
-                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event)"><i
+                              <button class="btn btn-default btn-sm" onclick="deletePlaylist(event, ${el.id})"><i
                                   class="zmdi zmdi-delete"></i></button>
                               <button class="btn btn-default btn-sm" onclick="showPlaylistDetail(${el.id})"><i
                                   class="zmdi zmdi-open-in-new"></i></button>
                             </td>
                           </tr>
       `)
+      })
+
     })
-      
-  })
-  .fail(err => console.log(err))
+    .fail(err => console.log(err))
 }
 
 function showPlaylistDetail(id) {
@@ -413,35 +496,35 @@ function showPlaylistDetail(id) {
   $.ajax({
     method: "GET",
     url: `${base_url}/playlist/${id}/song`,
-    headers: {access_token},
+    headers: { access_token },
   })
-  .done(response => {
-    console.log(response)
-    $(".song-list").empty();
-    response.Songs.forEach((el, i) => {
-      $(".song-list").append(`
-        <tr>
-          <td>${i}</td>
-          <td>
-            <audio id="audio" controls="controls" style="width: 100%;">
-                          <source id="audioSource" src="${el.link}">
-                          </source>
-                          Your browser does not support the audio format.
-                        </audio>
+    .done(response => {
+      console.log(response)
+      $(".song-list").empty();
+      response.Songs.forEach((el, i) => {
+        const list =
+/* html */ `<tr>
+          <td>${i + 1}</td>
+            <td>
+              <a id="${el.id}" onclick="playAudio(event, ${el.id})" class="play-audio" href="#"
+                data-datac="${el.link}"><button
+                  class="btn btn-default btn-sm"><i class="zmdi zmdi-play"></i></button></a>
+            </td>
+            <td>${el.title}<span class="badge badge-primary ml-3">${el.duration}</span></td>
+            <td>${el.artist}</td>
+            <td class="float-right">
+              <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
+                  class="zmdi zmdi-delete"></i></button>
+            </td>
+          </tr>`
 
-          </td>
-          <td>${el.title} <span class="badge badge-primary ml-3">${el.duration}</span></td>
-          <td>${el.artist}</td>
-          <td class="float-right">
-            <button onclick="deleteSong(event, ${response.id}, ${el.id})" class="btn btn-default btn-sm"><i
-                class="zmdi zmdi-delete"></i></button>
-          </td>
-        </tr>
-      `)
+        $(".song-list").append(list)
+        // var a = $('#mydiv').data('myval'); //getter 
+        // $(`#${el.id}`).data('datac', el.link);
+      })
+
     })
-      
-  })
-  .fail(err => console.log(err))
+    .fail(err => console.log(err))
 }
 
 function addSong(e) {
@@ -450,7 +533,12 @@ function addSong(e) {
   $("#page-detail-playlist").hide();
   $("#page-search-song").show();
 }
- 
+
+function searchSong(e) {
+  e.preventDefault()
+  alert('clicked')
+
+}
 function sweetAlert() {
   const ipAPI = '//api.ipify.org?format=json'
 
@@ -472,34 +560,38 @@ function sweetAlert() {
           })
         })
     }
-  }]) 
+  }])
 }
 
 function pauseAudio() {
   $("audio").not(this).each(function (index, audio) {
     audio.pause();
   });
-}
+} Y
 
-function playAudio(src){
-  var audio = document.getElementById('audio');
-  var source = document.getElementById('audioSource');
-  source.src = src;
-
-  audio.load(); //call this to just preload the audio without playing
-  audio.play(); //call this to play the song right away
-}
-$('.play-audio').click(function () {
-  var d = $(this).data('datac');
-  console.log(d)
+function playAudio(e, id) {
+  e.preventDefault();
+  var d = $(`#${id}`).data('datac');
+  console.log('datac', d)
+  console.log('id', id)
   var audio = document.getElementById('audio');
   var source = document.getElementById('audioSource');
   source.src = d;
-
   audio.load(); //call this to just preload the audio without playing
-  audio.play(); //call this to play the song right away
+  audio.play(); //call this to play the song right away 
+}
 
-});
+// $('.play-audio').click(function () {
+//   var d = $(this).data('datac');
+//   console.log('datac', d)
+//   alert(d)
+//   var audio = document.getElementById('audio');
+//   var source = document.getElementById('audioSource');
+//   source.src = d;
+//   audio.load(); //call this to just preload the audio without playing
+//   audio.play(); //call this to play the song right away
+
+// });
 
 
 $(function () {
@@ -509,13 +601,3 @@ $(function () {
     });
   });
 });
-
-
-// $(function () {
-//   $("audio").on("play", function () {
-//     $("audio").not(this).each(function (index, audio) {
-//       audio.pause();
-//     });
-//   });
-// });
-// Playlist

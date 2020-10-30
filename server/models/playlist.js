@@ -23,7 +23,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Playlist.init({
-    playlist_name: DataTypes.STRING
+    playlist_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Playlist name is require, cannot be empty!'
+        }, 
+        notEmpty: {
+          args: true,
+          msg: 'Playlist name is require, cannot be empty!'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Playlist',
