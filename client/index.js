@@ -708,12 +708,13 @@ function showJokes() {
     url: `${base_url}/randomJokes`,
     headers: { access_token }
   })
-    .done(response => {
-      console.log(response)
-    })
-    .fail(err => {
-      console.log(err)
-    })
+  .done(response=>{
+    console.log(response)
+    //$("#jokes").append(`<p>${response.setup} ${response.delivery}</p>`)
+  })
+  .fail(err=>{
+    console.log(err)
+  })
 }
 
 
